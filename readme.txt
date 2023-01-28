@@ -19,6 +19,5 @@ Infos:
         UPDATE mysql.user SET Host='%' WHERE Host='localhost' AND User='username';
 
 Todo: 
-    Create silmilaire app:
-        disable editing description and and file status
-        hide save and delete button
+    Create similaire desgin to this one (ajouter un demmande) : https://i.imgur.com/PMU5TrW.png
+    Create similaire desgin to this one (Home page) : https://i.imgur.com/5pH2oeF.png
