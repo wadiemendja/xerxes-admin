@@ -139,7 +139,13 @@
                 <span class="input-group-text">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M19.938 8H21a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-1.062A8.001 8.001 0 0 1 12 23v-2a6 6 0 0 0 6-6V9A6 6 0 1 0 6 9v7H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h1.062a8.001 8.001 0 0 1 15.876 0zM3 10v4h1v-4H3zm17 0v4h1v-4h-1zM7.76 15.785l1.06-1.696A5.972 5.972 0 0 0 12 15a5.972 5.972 0 0 0 3.18-.911l1.06 1.696A7.963 7.963 0 0 1 12 17a7.963 7.963 0 0 1-4.24-1.215z"/></svg>
                 </span>
-                <input class="form-control" id="service" placeholder="Industriel">
+                <select class="form-select" id="service">
+                    <option value="A" selected>Service A</option>
+                    <option value="B">Service B</option>
+                    <option value="C">Service C</option>
+                    <option value="D">Service D</option>
+                    <option value="informatique">Informatique</option>
+                </select>
             </div>
             <label class="form-label">Date de dépot:</label>
             <div class="mb-3 input-group">
@@ -164,7 +170,7 @@
                     placeholder="Write a simple description about the request..."></textarea>
             </div>
         </div>
-        <label class="form-label">Fichier (PDF file only):</label>
+        <label class="form-label">Fichiers (PDF files only):</label>
         <div class="mb-3 input-group">
             <span class="input-group-text">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M1 14.5a6.496 6.496 0 0 1 3.064-5.519 8.001 8.001 0 0 1 15.872 0 6.5 6.5 0 0 1-2.936 12L7 21c-3.356-.274-6-3.078-6-6.5zm15.848 4.487a4.5 4.5 0 0 0 2.03-8.309l-.807-.503-.12-.942a6.001 6.001 0 0 0-11.903 0l-.12.942-.805.503a4.5 4.5 0 0 0 2.029 8.309l.173.013h9.35l.173-.013zM13 13v4h-2v-4H8l4-5 4 5h-3z"/></svg>
