@@ -9,10 +9,35 @@
 
 #valider {
     margin-top: 20px;
-    width: 40%;
+    width: 100%;
+    background-color: #00B28B;
+    color: white;
 }
 
 #form h2 {
     text-align: center;
-    color: gray;
+    color: white;
+    padding: 70px 0;
+}
+
+.txtInputContainer {
+    column-count: 2;
+}
+
+.add-request-header {
+    height: 200px;
+    margin-bottom: 15px;
+    background-image: radial-gradient(darkgray, #0E594B);
+}
+
+.txtInputContainer label {
+    color: #00B28B;
+}
+
+.txtInputContainer input, select, textarea, #file {
+    border-color: #00B28B !important;
+}
+
+svg {
+    color: #00B28B;
 }
