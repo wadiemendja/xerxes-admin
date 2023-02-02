@@ -9,17 +9,16 @@ document.getElementById('searchBtn').disabled = true;
 document.getElementById('searchInput').disabled = true;
 // reading data file as base64 fromat 
 const fileDom = document.getElementById('file');
-let base64pdf = "";
+let base64pdf = [];
 fileDom.addEventListener('change', (event) => {
     const file = event.target.files[0];
     console.log(file);
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
     fileReader.onload = () => {
-        base64pdf = fileReader.result;
+        base64pdf.push(fileReader.result);
         const filePreviewer = document.getElementById('file_previewer');
-        filePreviewer.style.display = "";
-        filePreviewer.src = base64pdf;
+        filePreviewer.innerHTML += `<iframe src="${base64pdf[base64pdf.length - 1]}"></iframe>`
     };
 });
 // valider button when click
