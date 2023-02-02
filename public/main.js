@@ -47,6 +47,7 @@ const previewer_container = document.getElementById('preview_container');
 function listenToPreviewClicks() {
     tableBody.querySelectorAll('tr').forEach(element => {
         element.addEventListener('click', (event) => {
+            document.body.style.overflow = "hidden";
             previewer.style.marginTop = window.scrollY + "px";
             previewer.style.visibility = "visible";
             const nom = element.querySelector('.nom').innerText;
@@ -101,9 +102,9 @@ function listenToPreviewClicks() {
                 filesDom.innerHTML += `<iframe src="${fichier[i]}"></iframe>`;
             // append buttons
             document.querySelector('.btns').innerHTML = `
-                <button class="btn btn-outline-primary preview-btn" id="returnBtn">Retour</button>
-                <button class="btn btn-outline-danger preview-btn" id="deleteBtn">Supprimer la demande</button>
-                <button class="btn btn-outline-success preview-btn" id="saveBtn" disabled>Sauvegarder les modifications</button>
+                <button class="btn btn-primary preview-btn" id="returnBtn">Retour</button>
+                <button class="btn btn-danger preview-btn" id="deleteBtn">Supprimer la demande</button>
+                <button class="btn btn-success preview-btn" id="saveBtn" disabled>Sauvegarder les modifications</button>
             `;
             // listening to changes
             const statutSelecter = document.getElementById('statutSelecter');
@@ -136,7 +137,10 @@ function listenToPreviewClicks() {
             });
             // return from preview to home page
             const returnBtn = document.getElementById('returnBtn');
-            returnBtn.addEventListener('click', () => { previewer.style.visibility = "hidden"; });
+            returnBtn.addEventListener('click', () => { 
+                previewer.style.visibility = "hidden";
+                document.body.style.overflow = "visible";
+            });
         });
     });
 }
