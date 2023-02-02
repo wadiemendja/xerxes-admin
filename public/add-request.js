@@ -63,7 +63,7 @@ validerBtn.addEventListener('click', () => {
         date_depot: date_depot,
         duree_trait: duree_trait,
         description: description,
-        fichier: base64pdf
+        fichier: JSON.stringify(base64pdf)
     }
     fetch('/api/save-request', {
         method: 'POST',

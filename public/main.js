@@ -63,33 +63,42 @@ function listenToPreviewClicks() {
             const description = element.dataset.description;
             const id = element.querySelector('.id').dataset.id;
             let statut = element.querySelector('.statut').dataset.statut;
-            const fichier = element.dataset.pdf;
+            const fichier = eval(element.dataset.pdf);
+            console.log(fichier)
             previewer_container.innerHTML = `
-                <p>
-                    <strong>Modifier l'état de la demonde: </strong>
-                    <select class="form-select" aria-label="Default select example" id="statutSelecter">
-                        <option value="0" style="background:#FFCC00">En attendant</option>
-                        <option value="-1" style="background:#FF0000">Rejeté</option>
-                        <option value="1" style="background:#008000">Accepté</option>
-                    </select>
-                </p>
-                <p><strong>Nom: </strong>${nom}</p>
-                <p><strong>Prenom: </strong>${prenom}</p>
-                <p><strong>Email: </strong>${email}</p>
-                <p><strong>Telephone: </strong>${telephone}</p>
-                <p><strong>Wilaya: </strong>${wilaya}</p>
-                <p><strong>Daira: </strong>${daira}</p>
-                <p><strong>Commune: </strong>${commune}</p>
-                <p><strong>Domaine: </strong>${domain}</p>
-                <p><strong>Service: </strong>${service}</p>
-                <p><strong>Date de dépôt: </strong>${date_depot}</p>
-                <p><strong>Durée de traitement: </strong>${duree_trait}</p>
-                <p>
-                    <strong>Description: </strong>
-                    <textarea class="form-control" id="description" rows="3">${description}</textarea>
-                </p>
-                <iframe src="${fichier}"></iframe>
+                <div>
+                    <p>
+                        <strong>Modifier l'état de la demonde: </strong>
+                        <select class="form-select" aria-label="Default select example" id="statutSelecter">
+                            <option value="0" style="background:#FFCC00">En attendant</option>
+                            <option value="-1" style="background:#FF0000">Rejeté</option>
+                            <option value="1" style="background:#008000">Accepté</option>
+                        </select>
+                    </p>
+                    <p><strong>Nom: </strong>${nom}</p>
+                    <p><strong>Prenom: </strong>${prenom}</p>
+                    <p><strong>Email: </strong>${email}</p>
+                    <p><strong>Telephone: </strong>${telephone}</p>
+                    <p><strong>Wilaya: </strong>${wilaya}</p>
+                    <p><strong>Daira: </strong>${daira}</p>
+                    <p><strong>Commune: </strong>${commune}</p>
+                    <p><strong>Domaine: </strong>${domain}</p>
+                    <p><strong>Service: </strong>${service}</p>
+                    <p><strong>Date de dépôt: </strong>${date_depot}</p>
+                    <p><strong>Durée de traitement: </strong>${duree_trait}</p>
+                    <p>
+                        <strong>Description: </strong>
+                        <textarea class="form-control" id="description" rows="3">${description}</textarea>
+                    </p>
+                </div>
+                <div class="filesDom">
+                    <p><strong>Fichier(s): </strong></p>
+                </div>
             `;
+            // apending files
+            const filesDom = document.querySelector('.filesDom');
+            for (let i = 0; i < fichier.length; i++)
+                filesDom.innerHTML += `<iframe src="${fichier[i]}"></iframe>`;
             // append buttons
             document.querySelector('.btns').innerHTML = `
                 <button class="btn btn-outline-primary preview-btn" id="returnBtn">Retour</button>
