@@ -12,7 +12,7 @@ table {
 
 #table_body tr :hover{
     cursor: pointer;
-    background-color: lightgoldenrodyellow;
+    background-color: #00B28B;
 }
 
 #data_previewer {

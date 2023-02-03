@@ -7,6 +7,12 @@ const noElements = document.getElementById('no_elements');
 const spinner = document.getElementById('spinner');
 header.innerHTML = renderHeader();
 footer.innerHTML = renderFooter();
+// timer
+const dateArr = new Date().toString().split(' ');
+const timeDom = document.getElementById('time');
+const dateDom = document.getElementById('date');
+dateDom.innerText = `${dateArr[2]} ${dateArr[1]} ${dateArr[3]}`;
+setInterval(() => { timeDom.innerText = new Date().toString().split(' ')[4]; }, 999);
 // fetching requests data
 let requests = await fetchRequests();
 //requests.length =0;
