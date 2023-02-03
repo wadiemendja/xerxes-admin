@@ -30,15 +30,13 @@ function renderRequestsList() {
     for (let i in requests.reverse()) {
         const person = requests[i];
         tableBody.innerHTML += `
-        <tr data-description="${person.description}" data-pdf=${person.fichier}>
+        <tr data-daira="${person.daira}" data-commune="${person.commune}" data-description="${person.description}" data-pdf=${person.fichier}>
             <th scope="row" class="id" data-id="${person.id}">${counter}</th>
             <td class="nom">${person.nom}</td>
             <td class="prenom">${person.prenom}</td>
             <td class="email" data-email="${person.email}">${person.email.substring(0, 16)}...</td>
             <td class="telephone">${person.telephone}</td>
             <td class="wilaya">${person.wilaya}</td>
-            <td class="daira">${person.daira}</td>
-            <td class="commune">${person.commune}</td>
             <td class="domain">${person.domain}</td>
             <td class="service">${person.service}</td>
             <td class="date_depot">${person.date_depot}</td>
@@ -65,8 +63,8 @@ function listenToPreviewClicks() {
             const email = element.querySelector('.email').dataset.email;
             const telephone = element.querySelector('.telephone').innerText;
             const wilaya = element.querySelector('.wilaya').innerText;
-            const daira = element.querySelector('.daira').innerText;
-            const commune = element.querySelector('.commune').innerText;
+            const daira = element.dataset.daira;
+            const commune = element.dataset.commune;
             const domain = element.querySelector('.domain').innerText;
             const service = element.querySelector('.service').innerText;
             const date_depot = element.querySelector('.date_depot').innerText;

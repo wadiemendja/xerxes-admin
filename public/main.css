@@ -1,13 +1,10 @@
-body {
-    background-color: #F9F9FB;
+table {
+    text-align: center;
+    background-color: #F8F9FB;
 }
 
 #header {
     background-color: white;
-}
-
-table {
-    text-align: center;
 }
 
 #table_body tr :hover{
@@ -121,4 +118,18 @@ table {
 .search-alert {
     border-radius: 0px;
     margin: 0;
+}
+
+.content-container {
+    column-count: 2;
+    display: flex;
+}
+
+.services {
+    border-radius: 0;
+}
+
+.services :hover {
+    background: #00B28B;
+    cursor: pointer;
 }
