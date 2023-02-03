@@ -1,3 +1,7 @@
+body {
+    background-color: #F9F9FB;
+}
+
 #header {
     background-color: white;
 }
@@ -61,13 +65,13 @@ table {
 
 #no_elements img{
     display: block;
-    width: 30%;
+    width: 40%;
     margin: 0 auto;
     min-width: 242px;
 }
 
 #stats {
-    column-count: 4;
+    column-count: 5;
     display: flex;
 }
 
@@ -105,4 +109,16 @@ table {
 
 .status_indicator ul{
     color: black;
+}
+
+#spinner {
+    margin: 100px auto;
+    display: block;
+    width: 100px;
+    height: 100px;
+}
+
+.search-alert {
+    border-radius: 0px;
+    margin: 0;
 }

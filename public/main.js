@@ -4,16 +4,19 @@ const header = document.getElementById('header');
 const footer = document.getElementById('footer');
 const tableBody = document.getElementById('table_body');
 const noElements = document.getElementById('no_elements');
+const spinner = document.getElementById('spinner');
 header.innerHTML = renderHeader();
 footer.innerHTML = renderFooter();
 // fetching requests data
 let requests = await fetchRequests();
+//requests.length =0;
 // empty requests list handeling
 if (requests.length == 0) {
     noElements.innerHTML = `
         <img src="./img/no-elements.gif">
         <h2>Aucune demande n'est trouvée, ajoutez-en une pour pouvoir la voir ici<h2>
     `;
+    spinner.style.display = "none";
 }
 // rendering data (requests list)
 function renderRequestsList() {
@@ -39,6 +42,7 @@ function renderRequestsList() {
         `;
         counter++;
     }
+    spinner.style.display = "none";
 }
 renderRequestsList();
 // data previewer (listening to records click)
@@ -137,7 +141,7 @@ function listenToPreviewClicks() {
             });
             // return from preview to home page
             const returnBtn = document.getElementById('returnBtn');
-            returnBtn.addEventListener('click', () => { 
+            returnBtn.addEventListener('click', () => {
                 previewer.style.visibility = "hidden";
                 document.body.style.overflow = "visible";
             });

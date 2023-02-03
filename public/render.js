@@ -21,8 +21,8 @@ function renderHeader() {
           </li>
         </ul>
         <form class="d-flex " role="search">
-          <input class="form-control me-2" id="searchInput" type="search" placeholder="Rechercher par nom, prenon, telephone ou wilaya.." aria-label="Search" style="width: 400px">
-          <button class="btn btn-outline-success" type="submit" id="searchBtn">Rechercher</button>
+          <input class="form-control me-2" id="searchInput" type="search" placeholder="Rechercher par nom, prenon, telephone ou wilaya..." aria-label="Search" style="width: 400px">
+          <button class="btn btn-success" type="submit" id="searchBtn">Rechercher</button>
         </form>
       </div>
     </div>
