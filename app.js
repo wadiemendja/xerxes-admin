@@ -11,7 +11,7 @@ function createWindow() {
     }
   });
   win.setMenu(null);
-  win.loadURL('http://localhost:' + process.env.SERVER_PORT);
+  win.loadURL('http://localhost:' + process.env.SERVER_PORT + '/login.html');
 }
 // when app is ready
 app.whenReady().then(createWindow);

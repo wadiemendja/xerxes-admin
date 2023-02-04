@@ -3,8 +3,9 @@ function renderHeader() {
     <nav class="navbar navbar-expand-lg bg-tertiary"">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="./img/logo.jpg" alt="Bootstrap" width="30" height="24">
+      <img src="./img/logo.jpg" alt="Bootstrap" width="30" height="24">
       </a>
+      <a class="navbar-brand" href="#" id="title"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>

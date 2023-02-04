@@ -92,5 +92,13 @@ async function deleteRequest(reqId) {
     await promise;
     return true;
 }
-
-module.exports = { SQLdatabaseConnector, createDatabase, getRequests, saveRequest, getFilesStatus, searchFor, editFileStatus, deleteRequest };
+// get user
+async function getUser(username) {
+    let results = undefined;
+    const promise = new Promise((resolve, reject) => {
+        con.query(`select * from users where username="${username}"`, (err, result) => { results = result; resolve(); });
+    });
+    await promise;
+    return results;
+}
+module.exports = { SQLdatabaseConnector, createDatabase, getRequests, saveRequest, getFilesStatus, searchFor, editFileStatus, deleteRequest, getUser };

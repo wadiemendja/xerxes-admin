@@ -1,0 +1,20 @@
+form {
+    width: 40%;
+    margin: 70px auto;
+    border: 2px solid #6C757D;
+    padding: 15px;
+    border-radius: 15px;
+    max-width: 550px;
+}
+
+.accountImg {
+    width: 30%;
+    height: 20%;
+    margin: 20px auto;
+    display: block;
+    fill: #6C757D;
+}
+
+.loginBtn {
+    width: 100%;
+}

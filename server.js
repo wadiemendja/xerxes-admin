@@ -1,5 +1,5 @@
 const express = require('express');
-const { SQLdatabaseConnector, createDatabase, getRequests, saveRequest, getFilesStatus, searchFor, editFileStatus, deleteRequest } = require('./database/functions');
+const { SQLdatabaseConnector, createDatabase, getRequests, saveRequest, getFilesStatus, searchFor, editFileStatus, deleteRequest, getUser } = require('./database/functions');
 const path = require('path');
 require('dotenv').config();
 // connect to SQL database
@@ -61,4 +61,10 @@ app.post('/api/delete-request', async (req, res) => {
         const reqId = req.body.reqId;
         const done = await deleteRequest(reqId);
         res.send(done);
+});
+// getting user by username
+app.post('/api/get-user', async (req, res) => {
+        const username = req.body.username;
+        const result = await getUser(username);
+        res.send(result);
 });

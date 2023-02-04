@@ -21,4 +21,4 @@ Infos:
 Todo: 
     Create similaire desgin to this one (ajouter un demmande) : https://i.imgur.com/PMU5TrW.png
     Create similaire desgin to this one (Home page) : https://i.imgur.com/5pH2oeF.png
-    Add multiple pdfs
+    logout / services section / custmize service usernames and passwords
