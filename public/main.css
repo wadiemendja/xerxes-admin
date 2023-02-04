@@ -92,7 +92,7 @@ table {
 }
 
 #rejectedCount:hover, #acceptedCount:hover, #pendingCount:hover {
-    background-color: lightgray;
+    background-color: #00B28B;
     border-radius: 4px;
 }
 

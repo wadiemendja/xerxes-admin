@@ -19,8 +19,18 @@ function SQLdatabaseConnector() {
 function createDatabase() {
     con.query('create database xx', (err, result) => { console.log(result) });
     con.query('use xx', (err, result) => { console.log(result) });
-    con.query("create table requests (id int auto_increment primary key, nom varchar(20), prenom varchar(20), email varchar(40), telephone varchar(10), wilaya varchar(20), daira varchar(20), commune varchar(40), domain varchar(50), service varchar(40), date_depot varchar(20), duree_trait varchar(20), description varchar(255), statut varchar(2), fichier longtext)"
+    con.query("create table requests (id int auto_increment primary key, nom varchar(20), prenom varchar(20), email varchar(40), telephone varchar(10), wilaya varchar(20), daira varchar(20), commune varchar(40), domain varchar(50), service varchar(40), date_depot varchar(20), duree_trait varchar(20), description varchar(255), statut varchar(2), date varchar(20), fichier longtext)"
         , (err, result) => { console.log(result) });
+    con.query('create table users (id int auto_increment primary key, username varchar(20), password varchar(20))', (err, result) => { console.log(result) });
+    con.query('select count(*) from users', (err, result) => {
+        if (result[0]['count(*)'] == 0) {
+            con.query(`insert into users (username, password) values ('admin', 'admin')`, (err, result) => { console.log(result) });
+            con.query(`insert into users (username, password) values ('ServiceA', 'A1234')`, (err, result) => { console.log(result) });
+            con.query(`insert into users (username, password) values ('ServiceB', 'B1234')`, (err, result) => { console.log(result) });
+            con.query(`insert into users (username, password) values ('ServiceC', 'C1234')`, (err, result) => { console.log(result) });
+            con.query(`insert into users (username, password) values ('ServiceD', 'D1234')`, (err, result) => { console.log(result) });
+        }
+    });
 }
 // retrieve data 
 async function getRequests() {
@@ -34,7 +44,7 @@ async function getRequests() {
 // store requests in db
 async function saveRequest(data) {
     const promise = new Promise((resolve, reject) => {
-        con.query(`insert into requests (nom, prenom, email, telephone, wilaya, daira, commune, domain, service, date_depot, duree_trait, description, statut, fichier) values ("${data.nom}", "${data.prenom}", "${data.email}", "${data.telephone}", "${data.wilaya}", "${data.daira}", "${data.commune}", "${data.domain}", "${data.service}", "${data.date_depot}", "${data.duree_trait}", "${data.description}", "0", '${data.fichier}')`,
+        con.query(`insert into requests (nom, prenom, email, telephone, wilaya, daira, commune, domain, service, date_depot, duree_trait, description, statut, date, fichier) values ("${data.nom}", "${data.prenom}", "${data.email}", "${data.telephone}", "${data.wilaya}", "${data.daira}", "${data.commune}", "${data.domain}", "${data.service}", "${data.date_depot}", "${data.duree_trait}", "${data.description}", "0", "${new Date().getTime()}", '${data.fichier}')`,
             (err, result) => {
                 if (err) console.log(err);
                 else resolve();
