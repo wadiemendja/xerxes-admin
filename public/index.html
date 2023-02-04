@@ -59,40 +59,47 @@
   <div class="alert alert-primary search-alert" style="display: none;" role="alert"></div>
   <div class="content-container">
     <ol class="list-group list-group-numbered services">
-      <li class="list-group-item d-flex justify-content-between align-items-start">
+      <li class="list-group-item d-flex justify-content-between align-items-start service" data-service="*">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">Tous les services</div>
+          Inclure tous les statuts
+        </div>
+        <span class="badge bg-primary rounded-pill" id="AllServicesCount">0</span>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start service" data-service="A">
         <div class="ms-2 me-auto">
           <div class="fw-bold">Service A</div>
-          Dernière mise à jour:
+          Dernière mise à jour: <span id="Alastupdate">---</span>
         </div>
-        <span class="badge bg-primary rounded-pill">14</span>
+        <span class="badge bg-primary rounded-pill" id="serviceACount">0</span>
       </li>
-      <li class="list-group-item d-flex justify-content-between align-items-start">
+      <li class="list-group-item d-flex justify-content-between align-items-start service" data-service="B">
         <div class="ms-2 me-auto">
           <div class="fw-bold">Service B</div>
-          Dernière mise à jour:
+          Dernière mise à jour: <span id="Blastupdate">---</span>
         </div>
-        <span class="badge bg-primary rounded-pill">14</span>
+        <span class="badge bg-primary rounded-pill" id="serviceBCount">0</span>
       </li>
-      <li class="list-group-item d-flex justify-content-between align-items-start">
+      <li class="list-group-item d-flex justify-content-between align-items-start service" data-service="C">
         <div class="ms-2 me-auto">
           <div class="fw-bold">Service C</div>
-          Dernière mise à jour:
+          Dernière mise à jour: <span id="Clastupdate">---</span>
         </div>
-        <span class="badge bg-primary rounded-pill">14</span>
+        <span class="badge bg-primary rounded-pill" id="serviceCCount">0</span>
       </li>
-      <li class="list-group-item d-flex justify-content-between align-items-start">
+      <li class="list-group-item d-flex justify-content-between align-items-start service" data-service="D">
         <div class="ms-2 me-auto">
           <div class="fw-bold">Service D</div>
-          Dernière mise à jour:
+          Dernière mise à jour: <span id="Dlastupdate">---</span>
         </div>
-        <span class="badge bg-primary rounded-pill">14</span>
+        <span class="badge bg-primary rounded-pill" id="serviceDCount">0</span>
       </li>
-      <li class="list-group-item d-flex justify-content-between align-items-start">
+      <li class="list-group-item d-flex justify-content-between align-items-start service" data-service="informatique">
         <div class="ms-2 me-auto">
           <div class="fw-bold">Service Informatique</div>
-          Dernière mise à jour:
+          Dernière mise à jour: <span id="infoLastupdate">---</span>
         </div>
-        <span class="badge bg-primary rounded-pill">14</span>
+        <span class="badge bg-primary rounded-pill" id="serviceInfoCount">0</span>
       </li>
     </ol>
     <table class="table table-striped table-bordered">

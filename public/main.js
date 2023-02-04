@@ -12,12 +12,10 @@ const timeDom = document.getElementById('time');
 const dateDom = document.getElementById('date');
 const dateArr = new Date().toString().split(' ');
 dateDom.innerText = `${dateArr[2]} ${dateArr[1]} ${dateArr[3]}`;
-setInterval(() => { 
-    timeDom.innerText = new Date().toString().split(' ')[4]; }
-, 999);
+setInterval(() => { timeDom.innerText = new Date().toString().split(' ')[4]; }, 999);
 // fetching requests data
 let requests = await fetchRequests();
-//requests.length =0;
+//requests.length = 0;
 // empty requests list handeling
 if (requests.length == 0) {
     noElements.innerHTML = `
@@ -27,8 +25,9 @@ if (requests.length == 0) {
     spinner.style.display = "none";
 }
 // rendering data (requests list)
-function renderRequestsList() {
+async function renderRequestsList() {
     let counter = 1;
+    tableBody.innerHTML = "";
     for (let i in requests.reverse()) {
         const person = requests[i];
         tableBody.innerHTML += `
@@ -172,11 +171,11 @@ const checkForUpdates = setInterval(async () => {
         rejectedCountDom.innerText = currentStatusCounts.rejectedFiles;
         acceptedCountDom.innerText = currentStatusCounts.acceptedFiles;
         pendingCountDom.innerText = currentStatusCounts.pendingFiles;
-        tableBody.innerHTML = "";
         requests = await fetchRequests();
         initStatusCounts = currentStatusCounts;
         renderRequestsList();
         listenToPreviewClicks();
+        servicesCounts();
         trigerSound.click();
     }
 }, 1000);
@@ -266,3 +265,49 @@ async function deleteRequest(reqId) {
     const result = await fetcher.text();
     return result;
 }
+// moment calculation
+function calculateTimeGap(time) {
+    const result = moment(time).locale('fr').fromNow();
+    if (result == "Invalid date") return "---"
+    else return result
+}
+// services clicks 
+const servicesDom = document.querySelectorAll('.service');
+servicesDom.forEach(element => {
+    element.addEventListener('click', async () => {
+        const serviceName = element.dataset.service;
+        if (serviceName == "*") requests = await fetchRequests();
+        else requests = await fetchSearch(serviceName);
+        element.style.backgroundColor = "#00B28B";
+        servicesDom.forEach(ele => { if (ele != element) ele.style.backgroundColor = "" })
+        renderRequestsList();
+        listenToPreviewClicks();
+    });
+});
+// services requests and time counters
+async function servicesCounts() {
+    let serviceACounter = 0, serviceBCounter = 0, serviceCCounter = 0, serviceDCounter = 0, serviceInfoCounter = 0;
+    const serviceADates = [], serviceBDates = [], serviceCDates = [], serviceDDates = [], serviceInfoDates = [];
+    const NRequests = await fetchRequests();
+    for (let i in NRequests) {
+        const person = NRequests[i];
+        const service = person.service;
+        if (service == "A") { serviceACounter++; serviceADates.push(person.date) }
+        else if (service == "B") { serviceBCounter++; serviceBDates.push(person.date) }
+        else if (service == "C") { serviceCCounter++; serviceCDates.push(person.date) }
+        else if (service == "D") { serviceDCounter++; serviceDDates.push(person.date) }
+        else if (service == "informatique") { serviceInfoCounter++; serviceInfoDates.push(person.date) }
+    }
+    document.getElementById('Alastupdate').innerText = calculateTimeGap(Math.max(...serviceADates));
+    document.getElementById('Blastupdate').innerText = calculateTimeGap(Math.max(...serviceBDates));
+    document.getElementById('Clastupdate').innerText = calculateTimeGap(Math.max(...serviceCDates));
+    document.getElementById('Dlastupdate').innerText = calculateTimeGap(Math.max(...serviceDDates));
+    document.getElementById('infoLastupdate').innerText = calculateTimeGap(Math.max(...serviceInfoDates));
+    document.getElementById('serviceACount').innerText = serviceACounter;
+    document.getElementById('serviceBCount').innerText = serviceBCounter;
+    document.getElementById('serviceCCount').innerText = serviceCCounter;
+    document.getElementById('serviceDCount').innerText = serviceDCounter;
+    document.getElementById('serviceInfoCount').innerText = serviceInfoCounter;
+    document.getElementById('AllServicesCount').innerText = (await fetchRequests()).length;
+}
+servicesCounts();
