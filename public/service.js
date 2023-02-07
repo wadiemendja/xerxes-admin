@@ -7,7 +7,10 @@ const noElements = document.getElementById('no_elements');
 const spinner = document.getElementById('spinner');
 header.innerHTML = renderHeader();
 footer.innerHTML = renderFooter();
-document.getElementById('title').innerText = "Admin";
+// get used service
+const urlParams = new URLSearchParams(location.search);
+const usedService = urlParams.get('service');
+document.getElementById('title').innerText = "Service " + usedService;
 // timer
 const timeDom = document.getElementById('time');
 const dateDom = document.getElementById('date');

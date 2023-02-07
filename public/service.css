@@ -1,0 +1,138 @@
+#header {
+    background-color: white;
+}
+
+#table_body tr :hover{
+    cursor: pointer;
+    background-color: #00B28B;
+}
+
+#data_previewer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    padding: 20px 0;
+    z-index: 2;
+    background-color: white;
+}
+
+#preview_container {
+    width: 90%;
+    padding: 30px;
+    border: 2px solid #00B28B;
+    border-radius: 6px;
+    margin: 0 auto;
+    overflow-y: scroll;
+    height: 500px;
+}
+
+#preview_container .filesDom iframe {
+    width: 100%;
+    height: 500px;
+}
+
+#preview_container > div {
+    width: 100%;
+}
+
+.btns {
+    margin: 15px auto;
+    column-count: 3;
+    width: 90%;
+    display: flex;
+}
+
+.preview-btn {
+    width: 90%;
+    margin: 0 10px;
+}
+
+#no_elements {
+    text-align: center;
+    margin: 0 auto;
+    width: 60%;
+    color: gray;
+}
+
+#no_elements img{
+    display: block;
+    width: 45%;
+    margin: 30px auto;
+    min-width: 242px;
+    border-radius: 50px;
+}
+
+#stats {
+    column-count: 5;
+    display: flex;
+}
+
+#stats .stats-dom {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid lightgray;
+    color: white;
+}
+
+.approved {
+    background-color: #008000;
+}
+
+.pending {
+    background-color: #FFCC00;
+}
+
+.rejected {
+    background-color: #FF0000;
+}
+
+#rejectedCount:hover, #acceptedCount:hover, #pendingCount:hover {
+    background-color: #00B28B;
+    border-radius: 4px;
+}
+
+#rejectedCount, #acceptedCount, #pendingCount {
+    cursor: pointer;
+}
+
+.status_indicator {
+    background-color: lightgray;
+}
+
+.status_indicator ul{
+    color: black;
+}
+
+#spinner {
+    margin: 100px auto;
+    display: block;
+    width: 100px;
+    height: 100px;
+}
+
+.search-alert {
+    border-radius: 0px;
+    margin: 0;
+}
+
+.content-container {
+    column-count: 2;
+    display: flex;
+}
+
+table {
+    text-align: center;
+    background-color: #F8F9FB;
+    align-self: flex-start;
+}
+
+.services {
+    border-radius: 0;
+    width: 25%;
+}
+
+.services :hover {
+    background: #00B28B;
+    cursor: pointer;
+}
