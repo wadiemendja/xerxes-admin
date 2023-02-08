@@ -82,6 +82,7 @@ validerBtn.addEventListener('click', () => {
         body: JSON.stringify(request)
     }).then(console.log('request fullfieled'));
     alert("Votre demande a été ajoutée à la base de données avec succès, retournez à la page d'accueil...");
-    location.href = "/";
+    if (usedService == 'admin') location.href = "/";
+    else location.href = './service.html?service=' + usedService;
 });
 

@@ -312,8 +312,3 @@ async function servicesCounts() {
     document.getElementById('AllServicesCount').innerText = (await fetchRequests()).length;
 }
 servicesCounts();
-// logout button 
-document.getElementById('logoutBtn').addEventListener('click', (event) => {
-    event.preventDefault();
-    location.href = "./login.html";
-});

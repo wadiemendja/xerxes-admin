@@ -1,5 +1,5 @@
 const express = require('express');
-const { SQLdatabaseConnector, createDatabase, getRequests, saveRequest, getFilesStatus, searchFor, editFileStatus, deleteRequest, getUser } = require('./database/functions');
+const { SQLdatabaseConnector, createDatabase, getRequests, saveRequest, getFilesStatus, searchFor, editFileStatus, deleteRequest, getUser, getRequestsByService, getFilesStatusByService } = require('./database/functions');
 const path = require('path');
 require('dotenv').config();
 // connect to SQL database
@@ -67,4 +67,20 @@ app.post('/api/get-user', async (req, res) => {
         const username = req.body.username;
         const result = await getUser(username);
         res.send(result);
+});
+// get requests by service name 
+app.post('/api/get-requests-by-service', async (req, res) => {
+        const service = req.body.service;
+        res.send(await getRequestsByService(service));
+});
+// get status count by service name
+app.post('/api/get-status-counts-by-service', async (req, res) => {
+        const service = req.body.service;
+        res.send(await getFilesStatusByService(service));
+}); 
+// get request by service and status
+app.post('/api/get-requests-by-status-service', async (req, res) => {
+        const service = req.body.service;
+        const status = req.body.status;
+        res.send(await (service, status));
 });

@@ -18,7 +18,7 @@ const dateArr = new Date().toString().split(' ');
 dateDom.innerText = `${dateArr[2]} ${dateArr[1]} ${dateArr[3]}`;
 setInterval(() => { timeDom.innerText = new Date().toString().split(' ')[4]; }, 999);
 // fetching requests data
-let requests = await fetchRequests();
+let requests = await fetchRequestsByService();
 //requests.length = 0;
 // empty requests list handeling
 if (requests.length == 0) {
@@ -83,7 +83,7 @@ function listenToPreviewClicks() {
                 <div>
                     <p>
                         <strong>Modifier l'état de la demonde: </strong>
-                        <select class="form-select" aria-label="Default select example" id="statutSelecter">
+                        <select class="form-select" aria-label="Default select example" id="statutSelecter" disabled>
                             <option value="0" style="background:#FFCC00">En attendant</option>
                             <option value="-1" style="background:#FF0000">Rejeté</option>
                             <option value="1" style="background:#008000">Accepté</option>
@@ -102,7 +102,7 @@ function listenToPreviewClicks() {
                     <p><strong>Durée de traitement: </strong>${duree_trait}</p>
                     <p>
                         <strong>Description: </strong>
-                        <textarea class="form-control" id="description" rows="3">${description}</textarea>
+                        <textarea class="form-control" id="description" rows="3" disabled>${description}</textarea>
                     </p>
                 </div>
                 <div class="filesDom">
@@ -116,7 +116,7 @@ function listenToPreviewClicks() {
             // append buttons
             document.querySelector('.btns').innerHTML = `
                 <button class="btn btn-primary preview-btn" id="returnBtn">Retour</button>
-                <button class="btn btn-danger preview-btn" id="deleteBtn">Supprimer la demande</button>
+                <button class="btn btn-danger preview-btn" id="deleteBtn" disabled>Supprimer la demande</button>
                 <button class="btn btn-success preview-btn" id="saveBtn" disabled>Sauvegarder les modifications</button>
             `;
             // listening to changes
@@ -136,7 +136,7 @@ function listenToPreviewClicks() {
                 returnBtn.click();
                 await editFileStatus(statut, previewDescription.value, id);
                 alert('Statut du fichier modifié avec succès.');
-                location.href = "/";
+                location.href = "/service.html?service=" + usedService;
             });
             // delete request
             const deleteBtn = document.getElementById('deleteBtn');
@@ -145,7 +145,7 @@ function listenToPreviewClicks() {
                     returnBtn.click();
                     await deleteRequest(id);
                     alert('Demonde supprimé avec succès.');
-                    location.href = "/"
+                    location.href = "/service.html?service=" + usedService;
                 }
             });
             // return from preview to home page
@@ -158,10 +158,11 @@ function listenToPreviewClicks() {
     });
 }
 listenToPreviewClicks();
-// check for updates (refresh list on adding or deleting a request)
+// trigger notification sound when modification happens
 const sound = new Audio('./sound/notification.webm');
 const trigerSound = document.getElementById('trigerSound');
 trigerSound.addEventListener('click', () => sound.play());
+// check for updates (refresh list on adding or deleting a request)
 const rejectedCountDom = document.getElementById('rejectedCount');
 const pendingCountDom = document.getElementById('pendingCount');
 const acceptedCountDom = document.getElementById('acceptedCount');
@@ -175,7 +176,7 @@ const checkForUpdates = setInterval(async () => {
         rejectedCountDom.innerText = currentStatusCounts.rejectedFiles;
         acceptedCountDom.innerText = currentStatusCounts.acceptedFiles;
         pendingCountDom.innerText = currentStatusCounts.pendingFiles;
-        requests = await fetchRequests();
+        requests = await fetchRequestsByService();
         initStatusCounts = currentStatusCounts;
         renderRequestsList();
         listenToPreviewClicks();
@@ -197,6 +198,15 @@ async function searchEvent(event) {
     clearInterval(checkForUpdates);
     const input = event.target.tagName == 'BUTTON' ? searchInput.value : event.target.dataset.status;
     requests = await fetchSearch(input);
+    const elementId = event.target.id;
+    const holderArr = [];
+    if (elementId == "acceptedCount") {
+        for (let i in requests){
+            if (requests[i].service == usedService) holderArr.push(requests[i])
+            console.log(requests[i].statut)
+        } 
+        requests = holderArr;
+    }
     tableBody.innerHTML = "";
     noElements.innerHTML = "";
     alertSearch.style.display = "";
@@ -218,11 +228,31 @@ async function fetchRequests() {
     const requests = await fetcher.json();
     return requests;
 }
+// fetching requests by service name
+async function fetchRequestsByService() {
+    const fetcher = await fetch('/api/get-requests-by-service', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ service: usedService })
+    });
+    const result = await fetcher.json();
+    return result;
+}
 // fetch files status counts
 async function fetchStatusCounts() {
-    const fetcher = await fetch('/api/get-status-counts');
-    const statusCounts = await fetcher.json();
-    return statusCounts;
+    const fetcher = await fetch('/api/get-status-counts-by-service', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ service: usedService })
+    });
+    const result = await fetcher.json();
+    return result;
 }
 // fetch search input if exist
 async function fetchSearch(input) {
@@ -275,19 +305,6 @@ function calculateTimeGap(time) {
     if (result == "Invalid date") return "---"
     else return result
 }
-// services clicks 
-const servicesDom = document.querySelectorAll('.service');
-servicesDom.forEach(element => {
-    element.addEventListener('click', async () => {
-        const serviceName = element.dataset.service;
-        if (serviceName == "*") requests = await fetchRequests();
-        else requests = await fetchSearch(serviceName);
-        element.style.backgroundColor = "#00B28B";
-        servicesDom.forEach(ele => { if (ele != element) ele.style.backgroundColor = "" })
-        renderRequestsList();
-        listenToPreviewClicks();
-    });
-});
 // services requests and time counters
 async function servicesCounts() {
     let serviceACounter = 0, serviceBCounter = 0, serviceCCounter = 0, serviceDCounter = 0, serviceInfoCounter = 0;
@@ -315,12 +332,3 @@ async function servicesCounts() {
     document.getElementById('AllServicesCount').innerText = (await fetchRequests()).length;
 }
 servicesCounts();
-// logout button 
-document.getElementById('logoutBtn').addEventListener('click', (event)=>{
-    event.preventDefault();
-    location.href = "./login.html";
-});
-// add request btn 
-document.querySelector('.add-request-btn').addEventListener('click', ()=> {
-    location.href = './add-request.html?service=' + usedService;
-});
