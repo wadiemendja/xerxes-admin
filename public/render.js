@@ -22,8 +22,8 @@ function renderHeader(service = "Admin") {
             <a class="nav-link" href="${service != 'Admin' ? homePage : './users.html?service=admin'}">Utilisateurs</a>
           </li>
         </ul>
-        <form class="d-flex " role="search">
-          <input class="form-control me-2" id="searchInput" type="search" placeholder="Rechercher par nom, prenon, telephone ou wilaya..." aria-label="Search" style="width: 400px">
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" id="searchInput" type="search" placeholder="Rechercher par nom, telephone ou wilaya..." aria-label="Search" style="width: 338px">
           <button class="btn btn-success" type="submit" id="searchBtn">Rechercher</button>
         </form>
         <a href="/login.html">

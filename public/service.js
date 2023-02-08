@@ -205,7 +205,7 @@ async function searchEvent(event) {
     noElements.innerHTML = "";
     alertSearch.style.display = "";
     alertSearch.innerHTML = `
-        <strong>${requests.length}</strong> recherche trouvée par "${input}", revenir à la liste d'origine <a href="/" style="color:red">(Home page)</a>
+        <strong>${requests.length}</strong> recherche trouvée par "${input}", revenir à la liste d'origine <a href="./service.html?service=${usedService}" style="color:red">(Home page)</a>
     `;
     if (requests.length == 0) {
         noElements.innerHTML = `

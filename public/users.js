@@ -17,12 +17,12 @@ for (let i in users) {
         <h3>${user.username} :</h3>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Username</span>
-            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+            <input type="text" class="form-control" placeholder="Username"
                 aria-describedby="basic-addon1" value="${user.username}" disabled>
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Mot de passe</span>
-            <input type="text" class="form-control password" placeholder="Username" aria-label="Username"
+            <input type="text" class="form-control password" placeholder="Password"
                 aria-describedby="basic-addon1" value="${user.password}">
         </div>
         <button class="btn btn-primary edit-password-btn" data-id="${user.id}">Modifier le mot de passe d'utilisateur</button>
@@ -37,7 +37,7 @@ editPassBtns.forEach(btn => {
         const userId = btn.dataset.id;
         const newPassword = btn.parentNode.querySelector('.password').value;
         await editUserPassword(userId, newPassword);
-        alert ('succes');
+        alert ('Le mot de passe a été modifié avec succès');
         location.reload();
     });
 })
