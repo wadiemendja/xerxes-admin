@@ -313,7 +313,7 @@ async function servicesCounts() {
 }
 servicesCounts();
 // logout button 
-document.getElementById('logoutBtn').addEventListener('click', (event)=>{
+document.getElementById('logoutBtn').addEventListener('click', (event) => {
     event.preventDefault();
     location.href = "./login.html";
 });

@@ -5,11 +5,11 @@ const footer = document.getElementById('footer');
 const tableBody = document.getElementById('table_body');
 const noElements = document.getElementById('no_elements');
 const spinner = document.getElementById('spinner');
-header.innerHTML = renderHeader();
 footer.innerHTML = renderFooter();
 // get used service
 const urlParams = new URLSearchParams(location.search);
 const usedService = urlParams.get('service');
+header.innerHTML = renderHeader(usedService);
 document.getElementById('title').innerText = "Service " + usedService;
 // timer
 const timeDom = document.getElementById('time');
@@ -319,4 +319,8 @@ servicesCounts();
 document.getElementById('logoutBtn').addEventListener('click', (event)=>{
     event.preventDefault();
     location.href = "./login.html";
+});
+// add request btn 
+document.querySelector('.add-request-btn').addEventListener('click', ()=> {
+    location.href = './add-request.html?service=' + usedService;
 });

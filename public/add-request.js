@@ -2,8 +2,16 @@ import { renderHeader, renderFooter } from './render.js';
 // int header and footer
 const header = document.getElementById('header');
 const footer = document.getElementById('footer');
-header.innerHTML = renderHeader();
 footer.innerHTML = renderFooter();
+// get used service
+const urlParams = new URLSearchParams(location.search);
+const usedService = urlParams.get('service');
+header.innerHTML = renderHeader(usedService);
+const serviceDom = document.getElementById('service');
+if (usedService != 'admin') {
+    serviceDom.value = usedService;
+    serviceDom.disabled = true;
+}
 // disabling search bar on this page
 document.getElementById('searchBtn').disabled = true;
 document.getElementById('searchInput').disabled = true;

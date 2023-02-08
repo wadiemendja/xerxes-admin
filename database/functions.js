@@ -29,6 +29,7 @@ function createDatabase() {
             con.query(`insert into users (username, password) values ('ServiceB', 'B1234')`, (err, result) => { console.log(result) });
             con.query(`insert into users (username, password) values ('ServiceC', 'C1234')`, (err, result) => { console.log(result) });
             con.query(`insert into users (username, password) values ('ServiceD', 'D1234')`, (err, result) => { console.log(result) });
+            con.query(`insert into users (username, password) values ('ServiceInfo', 'info1234')`, (err, result) => { console.log(result) });
         }
     });
 }

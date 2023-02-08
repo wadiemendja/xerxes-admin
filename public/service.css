@@ -130,6 +130,7 @@ table {
 .services {
     border-radius: 0;
     width: 25%;
+    opacity: 50%;
 }
 
 .services :hover {
