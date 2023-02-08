@@ -1,5 +1,5 @@
 const express = require('express');
-const { SQLdatabaseConnector, createDatabase, getRequests, saveRequest, getFilesStatus, searchFor, editFileStatus, deleteRequest, getUser, getRequestsByService, getFilesStatusByService } = require('./database/functions');
+const { SQLdatabaseConnector, createDatabase, getRequests, saveRequest, getFilesStatus, searchFor, editFileStatus, deleteRequest, getUser, getRequestsByService, getFilesStatusByService, getUsers, editUserPassword } = require('./database/functions');
 const path = require('path');
 require('dotenv').config();
 // connect to SQL database
@@ -77,10 +77,14 @@ app.post('/api/get-requests-by-service', async (req, res) => {
 app.post('/api/get-status-counts-by-service', async (req, res) => {
         const service = req.body.service;
         res.send(await getFilesStatusByService(service));
-}); 
-// get request by service and status
-app.post('/api/get-requests-by-status-service', async (req, res) => {
-        const service = req.body.service;
-        const status = req.body.status;
-        res.send(await (service, status));
+});
+// getUsers with thier derails 
+app.get('/api/get-users', async (req, res) => {
+        res.send(await getUsers());
+});
+// edit user password by id
+app.post('/api/edit-user-password', async (req, res) => {
+        const userId = req.body.userId;
+        const newPassword = req.body.newPassword;
+        res.send(await editUserPassword(userId, newPassword));
 });

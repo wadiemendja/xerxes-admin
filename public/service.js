@@ -198,15 +198,9 @@ async function searchEvent(event) {
     clearInterval(checkForUpdates);
     const input = event.target.tagName == 'BUTTON' ? searchInput.value : event.target.dataset.status;
     requests = await fetchSearch(input);
-    const elementId = event.target.id;
     const holderArr = [];
-    if (elementId == "acceptedCount") {
-        for (let i in requests){
-            if (requests[i].service == usedService) holderArr.push(requests[i])
-            console.log(requests[i].statut)
-        } 
-        requests = holderArr;
-    }
+    for (let i in requests) if (requests[i].service == usedService) holderArr.push(requests[i])
+    requests = holderArr;
     tableBody.innerHTML = "";
     noElements.innerHTML = "";
     alertSearch.style.display = "";

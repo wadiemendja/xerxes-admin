@@ -21,15 +21,17 @@ function createDatabase() {
     con.query('use xx', (err, result) => { console.log(result) });
     con.query("create table requests (id int auto_increment primary key, nom varchar(20), prenom varchar(20), email varchar(40), telephone varchar(10), wilaya varchar(20), daira varchar(20), commune varchar(40), domain varchar(50), service varchar(40), date_depot varchar(20), duree_trait varchar(20), description varchar(255), statut varchar(2), date varchar(20), fichier longtext)"
         , (err, result) => { console.log(result) });
-    con.query('drop table users;', (err, result) => { console.log(result) });
     con.query('create table users (id int auto_increment primary key, username varchar(20), password varchar(20))', (err, result) => { console.log(result) });
-    con.query(`insert into users (username, password) values ('admin', 'admin')`, (err, result) => { console.log(result) });
-    con.query(`insert into users (username, password) values ('ServiceA', 'A1234')`, (err, result) => { console.log(result) });
-    con.query(`insert into users (username, password) values ('ServiceB', 'B1234')`, (err, result) => { console.log(result) });
-    con.query(`insert into users (username, password) values ('ServiceC', 'C1234')`, (err, result) => { console.log(result) });
-    con.query(`insert into users (username, password) values ('ServiceD', 'D1234')`, (err, result) => { console.log(result) });
-    con.query(`insert into users (username, password) values ('ServiceInfo', 'info1234')`, (err, result) => { console.log(result) });
-
+    con.query('select count(*) from users', (err, result) => {
+        if (result[0]['count(*)'] == 0) {
+            con.query(`insert into users (username, password) values ('admin', 'admin')`, (err, result) => { console.log(result) });
+            con.query(`insert into users (username, password) values ('ServiceA', 'A1234')`, (err, result) => { console.log(result) });
+            con.query(`insert into users (username, password) values ('ServiceB', 'B1234')`, (err, result) => { console.log(result) });
+            con.query(`insert into users (username, password) values ('ServiceC', 'C1234')`, (err, result) => { console.log(result) });
+            con.query(`insert into users (username, password) values ('ServiceD', 'D1234')`, (err, result) => { console.log(result) });
+            con.query(`insert into users (username, password) values ('ServiceInfo', 'info1234')`, (err, result) => { console.log(result) });
+        }
+    });
 }
 // retrieve data 
 async function getRequests() {
@@ -100,6 +102,15 @@ async function getUser(username) {
     await promise;
     return results;
 }
+// get users with(S)
+async function getUsers() {
+    let results = undefined;
+    const promise = new Promise((resolve, reject) => {
+        con.query(`select * from users`, (err, result) => { results = result; resolve(); });
+    });
+    await promise;
+    return results;
+}
 // get request bu service name 
 async function getRequestsByService(serviceName) {
     let results = undefined;
@@ -124,14 +135,16 @@ async function getFilesStatusByService(serviceName) {
         pendingFiles: pendingFiles[0]['count(*)']
     };
 }
-// get request by service name and files status
-async function getRequestsByServiceAndStatus(serviceName, status) {
-    let results = undefined;
+// edit user passsword 
+async function editUserPassword(userId, newPassword) {
     const promise = new Promise((resolve, reject) => {
-        con.query(`select * from requests where service="${serviceName}" and statut="${status}"`, (err, result) => { results = result; resolve(); });
+        con.query(`update users set password="${newPassword}" where id=${userId}`, (err, result) => { resolve(); });
     });
     await promise;
-    return results;
+    return true;
 }
-module.exports = { SQLdatabaseConnector, createDatabase, getRequests, saveRequest, getFilesStatus, searchFor, 
-    editFileStatus, deleteRequest, getUser, getRequestsByService, getFilesStatusByService, getRequestsByServiceAndStatus };
+module.exports = {
+    SQLdatabaseConnector, createDatabase, getRequests, saveRequest, getFilesStatus, searchFor,
+    editFileStatus, deleteRequest, getUser, getRequestsByService, getFilesStatusByService, getUsers,
+    editUserPassword
+};

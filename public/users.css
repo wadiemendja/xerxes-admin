@@ -1,0 +1,17 @@
+.container {
+    width: 70%;
+    padding: 20px;
+    border-left: 2px solid lightgray;
+    border-right: 2px solid lightgray;
+    margin: 0 auto;
+    min-width: 700px;
+}
+
+.user button {
+    width: 49% !important;
+    margin: 0 auto;
+}
+
+.user {
+    margin-bottom: 20px;
+}
