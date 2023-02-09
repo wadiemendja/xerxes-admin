@@ -297,7 +297,7 @@ async function servicesCounts() {
         else if (service == "B") { serviceBCounter++; serviceBDates.push(person.date) }
         else if (service == "C") { serviceCCounter++; serviceCDates.push(person.date) }
         else if (service == "D") { serviceDCounter++; serviceDDates.push(person.date) }
-        else if (service == "informatique") { serviceInfoCounter++; serviceInfoDates.push(person.date) }
+        else if (service == "Info") { serviceInfoCounter++; serviceInfoDates.push(person.date) }
     }
     document.getElementById('Alastupdate').innerText = calculateTimeGap(Math.max(...serviceADates));
     document.getElementById('Blastupdate').innerText = calculateTimeGap(Math.max(...serviceBDates));
