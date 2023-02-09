@@ -6,12 +6,17 @@ footer.innerHTML = renderFooter();
 // get used service
 const urlParams = new URLSearchParams(location.search);
 const usedService = urlParams.get('service');
+// rendering header depending on the used service
 const serviceDom = document.getElementById('service');
-if (usedService != 'admin') {
-    serviceDom.value = usedService;
-    serviceDom.disabled = true;
+if (usedService == 'admin') {
+    header.innerHTML = renderHeader();
+} else {
+    if (usedService != 'Info'){
+        serviceDom.value = usedService;
+        serviceDom.disabled = true;
+    }
     header.innerHTML = renderHeader(usedService);
-} else header.innerHTML = renderHeader();
+}
 // disabling search bar on this page
 document.getElementById('searchBtn').disabled = true;
 document.getElementById('searchInput').disabled = true;

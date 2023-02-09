@@ -21,8 +21,12 @@
   </div>
   <div id="stats">
     <div class="approved stats-dom">
-      <h4>Demandes acceptées:</h4>
+      <h4>Acceptées:</h4>
       <h5 data-status="1" id="acceptedCount">0</h5>
+    </div>
+    <div class="approvedByService stats-dom">
+      <h4>Acc par service:</h4>
+      <h5 data-status="2" id="acceptedByServiceCount">0</h5>
     </div>
     <div class="pending stats-dom">
       <h4>En attendant:</h4>
@@ -34,20 +38,25 @@
     </div>
     <div class="status_indicator stats-dom">
       <ul style="list-style:none;">
-        <li style="margin-top:4px;">
+        <li style="margin-top: 4px;">
           <div
             style="float:left;margin-right:4px;margin-top:7px;border:1px solid #000000;width:10px;height:10px;background-color:#FFCC00">
           </div>En attendant
         </li>
-        <li style="margin-top:4px;">
+        <li>
           <div
             style="float:left;margin-right:4px;margin-top:7px;border:1px solid #000000;width:10px;height:10px;background-color:#FF0000">
           </div>Rejeté
         </li>
-        <li style="margin-top:4px;">
+        <li>
           <div
             style="float:left;margin-right:4px;margin-top:7px;border:1px solid #000000;width:10px;height:10px;background-color:#008000">
           </div>Accepé
+        </li>
+        <li>
+          <div
+            style="float:left;margin-right:4px;margin-top:7px;border:1px solid #000000;width:10px;height:10px;background-color:#0D6EFD">
+          </div>Accepé par service
         </li>
       </ul>
     </div>

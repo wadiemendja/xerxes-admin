@@ -238,7 +238,8 @@ async function fetchSearch(input) {
 function renderStatusBox(status) {
     if (status == 1) return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#008000;margin:0 auto"></div>`;
     else if (status == 0) return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#FFCC00;margin:0 auto"></div>`;
-    else return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#FF0000;margin:0 auto"></div>`;
+    else if (status == -1)return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#FF0000;margin:0 auto"></div>`;
+    else return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#0D6EFD;margin:0 auto"></div>`;
 }
 // edit file status and description
 async function editFileStatus(statut, description, reqId) {

@@ -64,7 +64,7 @@
 }
 
 #stats {
-    column-count: 5;
+    column-count: 6;
     display: flex;
 }
 
@@ -77,6 +77,10 @@
 
 .approved {
     background-color: #008000;
+}
+
+.approvedByService {
+     background-color: #0D6EFD;
 }
 
 .pending {
@@ -98,6 +102,7 @@
 
 .status_indicator {
     background-color: lightgray;
+    padding: 0px !important;
 }
 
 .status_indicator ul{
