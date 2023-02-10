@@ -82,7 +82,7 @@ async function searchFor(searchInput) {
 // editing request status and description
 async function editFileStatus(statut, description, reqId) {
     const promise = new Promise((resolve, reject) => {
-        con.query(`update requests set statut="${statut}", description="${description}" where id=${reqId}`, (err, result) => { resolve(); });
+        con.query(`update requests set statut="${statut}", description="${description}", date="${new Date().getTime()}" where id=${reqId}`, (err, result) => { resolve(); });
     });
     await promise;
     return true;

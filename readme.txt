@@ -19,4 +19,3 @@ Infos:
         UPDATE mysql.user SET Host='%' WHERE Host='localhost' AND User='username';
 
 Todo: 
-    make side bar available on service info

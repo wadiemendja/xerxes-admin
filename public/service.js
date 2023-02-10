@@ -111,7 +111,7 @@ function listenToPreviewClicks() {
                     <p><strong>Durée de traitement: </strong>${duree_trait}</p>
                     <p>
                         <strong>Description: </strong>
-                        <textarea class="form-control" id="description" rows="3" ${statut != 0 ? 'disabled' : ''}>${description}</textarea>
+                        <textarea class="form-control" id="description" rows="3" ${statut != 0 || usedService == 'Info'? 'disabled' : ''}>${description}</textarea>
                     </p>
                 </div>
                 <div class="filesDom">
@@ -125,7 +125,7 @@ function listenToPreviewClicks() {
             // append buttons
             document.querySelector('.btns').innerHTML = `
                 <button class="btn btn-primary preview-btn" id="returnBtn">Retour</button>
-                <button class="btn btn-danger preview-btn" id="deleteBtn" ${statut != 0 ? 'disabled' : ''}>Supprimer la demande</button>
+                <button class="btn btn-danger preview-btn" id="deleteBtn" ${statut != 0 || usedService == 'Info' ? 'disabled' : ''}>Supprimer la demande</button>
                 <button class="btn btn-success preview-btn" id="saveBtn" disabled>Sauvegarder les modifications</button>
             `;
             // listening to changes
@@ -351,3 +351,21 @@ async function servicesCounts() {
     document.getElementById('AllServicesCount').innerText = (await fetchRequests()).length;
 }
 servicesCounts();
+// make side bar available if the used service is informatique
+if (usedService == 'Info') {
+    const servicesDom = document.querySelectorAll('.service');
+    servicesDom.forEach(element => {
+        element.addEventListener('click', async () => {
+            alertSearch.style.display = 'none';
+            noElements.innerHTML = '';
+            const serviceName = element.dataset.service;
+            if (serviceName == "*") requests = await fetchRequests();
+            else requests = await fetchSearch(serviceName);
+            element.style.backgroundColor = "#00B28B";
+            servicesDom.forEach(ele => { if (ele != element) ele.style.backgroundColor = "" });
+            renderRequestsList();
+            listenToPreviewClicks();
+        });
+    });
+    document.querySelector('.services').style.opacity = "1";
+}
