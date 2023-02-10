@@ -78,16 +78,25 @@ function listenToPreviewClicks() {
             const id = element.querySelector('.id').dataset.id;
             let statut = element.querySelector('.statut').dataset.statut;
             const fichier = eval(element.dataset.pdf);
-            console.log(fichier)
+            console.log(statut)
             previewer_container.innerHTML = `
                 <div>
                     <p>
-                        <strong>Modifier l'état de la demonde: </strong>
+                    ${statut == 1 || statut == -1 || usedService == 'Info' ?
+                    `<strong>L'état de la demonde: </strong>
                         <select class="form-select" aria-label="Default select example" id="statutSelecter" disabled>
-                            <option value="0" style="background:#FFCC00">En attendant</option>
-                            <option value="-1" style="background:#FF0000">Rejeté</option>
-                            <option value="1" style="background:#008000">Accepté</option>
-                        </select>
+                                <option value="1" style="background:#008000">Accepté</option>
+                                <option value="-1" style="background:#FF0000">Rejeté</option>
+                                <option value="0" style="background:#FFCC00">En attendant</option>
+                                <option value="2" style="background:#0D6EFD">Accepté par service</option>
+                        </select>`
+                    :
+                    `<strong>Modifier l'état de la demonde: </strong>
+                        <select class="form-select" aria-label="Default select example" id="statutSelecter">
+                                <option value="0" style="background:#FFCC00">En attendant</option>
+                                <option value="2" style="background:#0D6EFD">Accepté par service</option>
+                        </select>`
+                }
                     </p>
                     <p><strong>Nom: </strong>${nom}</p>
                     <p><strong>Prenom: </strong>${prenom}</p>
@@ -102,7 +111,7 @@ function listenToPreviewClicks() {
                     <p><strong>Durée de traitement: </strong>${duree_trait}</p>
                     <p>
                         <strong>Description: </strong>
-                        <textarea class="form-control" id="description" rows="3" disabled>${description}</textarea>
+                        <textarea class="form-control" id="description" rows="3" ${statut != 0 ? 'disabled' : ''}>${description}</textarea>
                     </p>
                 </div>
                 <div class="filesDom">
@@ -116,7 +125,7 @@ function listenToPreviewClicks() {
             // append buttons
             document.querySelector('.btns').innerHTML = `
                 <button class="btn btn-primary preview-btn" id="returnBtn">Retour</button>
-                <button class="btn btn-danger preview-btn" id="deleteBtn" disabled>Supprimer la demande</button>
+                <button class="btn btn-danger preview-btn" id="deleteBtn" ${statut != 0 ? 'disabled' : ''}>Supprimer la demande</button>
                 <button class="btn btn-success preview-btn" id="saveBtn" disabled>Sauvegarder les modifications</button>
             `;
             // listening to changes
@@ -129,7 +138,7 @@ function listenToPreviewClicks() {
                 statutSelecter.style.background = statutSelecter.querySelector(`[value="${statut}"]`).style.background;
             });
             const previewDescription = document.getElementById('description');
-            previewDescription.addEventListener('change', () => { saveBtn.disabled = false })
+            previewDescription.addEventListener('input', () => { saveBtn.disabled = false });
             // change request status and description
             const saveBtn = document.getElementById('saveBtn');
             saveBtn.addEventListener('click', async () => {
@@ -166,16 +175,19 @@ trigerSound.addEventListener('click', () => sound.play());
 const rejectedCountDom = document.getElementById('rejectedCount');
 const pendingCountDom = document.getElementById('pendingCount');
 const acceptedCountDom = document.getElementById('acceptedCount');
+const acceptedByServiceCountDom = document.getElementById('acceptedByServiceCount');
 let initStatusCounts = await fetchStatusCounts();
 rejectedCountDom.innerText = initStatusCounts.rejectedFiles;
 acceptedCountDom.innerText = initStatusCounts.acceptedFiles;
 pendingCountDom.innerText = initStatusCounts.pendingFiles;
+acceptedByServiceCountDom.innerText = initStatusCounts.acceptedByServiceFiles;
 const checkForUpdates = setInterval(async () => {
     const currentStatusCounts = await fetchStatusCounts();
     if (JSON.stringify(currentStatusCounts) != JSON.stringify(initStatusCounts)) {
         rejectedCountDom.innerText = currentStatusCounts.rejectedFiles;
         acceptedCountDom.innerText = currentStatusCounts.acceptedFiles;
         pendingCountDom.innerText = currentStatusCounts.pendingFiles;
+        acceptedByServiceCountDom.innerText = currentStatusCounts.acceptedByServiceFiles;
         requests = await fetchRequestsByService();
         initStatusCounts = currentStatusCounts;
         renderRequestsList();
@@ -192,15 +204,18 @@ searchBtn.addEventListener('click', searchEvent);
 document.getElementById('acceptedCount').addEventListener('click', searchEvent);
 document.getElementById('pendingCount').addEventListener('click', searchEvent);
 document.getElementById('rejectedCount').addEventListener('click', searchEvent);
+document.getElementById('acceptedByServiceCount').addEventListener('click', searchEvent);
 // functions
 async function searchEvent(event) {
     event.preventDefault();
     clearInterval(checkForUpdates);
     const input = event.target.tagName == 'BUTTON' ? searchInput.value : event.target.dataset.status;
     requests = await fetchSearch(input);
-    const holderArr = [];
-    for (let i in requests) if (requests[i].service == usedService) holderArr.push(requests[i])
-    requests = holderArr;
+    if (usedService != 'Info') {
+        const holderArr = [];
+        for (let i in requests) if (requests[i].service == usedService) holderArr.push(requests[i]);
+        requests = holderArr;
+    }
     tableBody.innerHTML = "";
     noElements.innerHTML = "";
     alertSearch.style.display = "";
@@ -224,29 +239,41 @@ async function fetchRequests() {
 }
 // fetching requests by service name
 async function fetchRequestsByService() {
-    const fetcher = await fetch('/api/get-requests-by-service', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ service: usedService })
-    });
-    const result = await fetcher.json();
-    return result;
+    if (usedService == 'Info') {
+        const fetcher = await fetch('/api/get-requests');
+        const requests = await fetcher.json();
+        return requests;
+    } else {
+        const fetcher = await fetch('/api/get-requests-by-service', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ service: usedService })
+        });
+        const result = await fetcher.json();
+        return result;
+    }
 }
 // fetch files status counts
 async function fetchStatusCounts() {
-    const fetcher = await fetch('/api/get-status-counts-by-service', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ service: usedService })
-    });
-    const result = await fetcher.json();
-    return result;
+    if (usedService == 'Info') {
+        const fetcher = await fetch('/api/get-status-counts');
+        const statusCounts = await fetcher.json();
+        return statusCounts;
+    } else {
+        const fetcher = await fetch('/api/get-status-counts-by-service', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ service: usedService })
+        });
+        const result = await fetcher.json();
+        return result;
+    }
 }
 // fetch search input if exist
 async function fetchSearch(input) {
@@ -265,7 +292,8 @@ async function fetchSearch(input) {
 function renderStatusBox(status) {
     if (status == 1) return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#008000;margin:0 auto"></div>`;
     else if (status == 0) return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#FFCC00;margin:0 auto"></div>`;
-    else return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#FF0000;margin:0 auto"></div>`;
+    else if (status == -1) return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#FF0000;margin:0 auto"></div>`;
+    else return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#0D6EFD;margin:0 auto"></div>`;
 }
 // edit file status and description
 async function editFileStatus(statut, description, reqId) {
@@ -301,8 +329,8 @@ function calculateTimeGap(time) {
 }
 // services requests and time counters
 async function servicesCounts() {
-    let serviceACounter = 0, serviceBCounter = 0, serviceCCounter = 0, serviceDCounter = 0, serviceInfoCounter = 0;
-    const serviceADates = [], serviceBDates = [], serviceCDates = [], serviceDDates = [], serviceInfoDates = [];
+    let serviceACounter = 0, serviceBCounter = 0, serviceCCounter = 0, serviceDCounter = 0;
+    const serviceADates = [], serviceBDates = [], serviceCDates = [], serviceDDates = [];
     const NRequests = await fetchRequests();
     for (let i in NRequests) {
         const person = NRequests[i];
@@ -311,18 +339,15 @@ async function servicesCounts() {
         else if (service == "B") { serviceBCounter++; serviceBDates.push(person.date) }
         else if (service == "C") { serviceCCounter++; serviceCDates.push(person.date) }
         else if (service == "D") { serviceDCounter++; serviceDDates.push(person.date) }
-        else if (service == "Info") { serviceInfoCounter++; serviceInfoDates.push(person.date) }
     }
     document.getElementById('Alastupdate').innerText = calculateTimeGap(Math.max(...serviceADates));
     document.getElementById('Blastupdate').innerText = calculateTimeGap(Math.max(...serviceBDates));
     document.getElementById('Clastupdate').innerText = calculateTimeGap(Math.max(...serviceCDates));
     document.getElementById('Dlastupdate').innerText = calculateTimeGap(Math.max(...serviceDDates));
-    document.getElementById('infoLastupdate').innerText = calculateTimeGap(Math.max(...serviceInfoDates));
     document.getElementById('serviceACount').innerText = serviceACounter;
     document.getElementById('serviceBCount').innerText = serviceBCounter;
     document.getElementById('serviceCCount').innerText = serviceCCounter;
     document.getElementById('serviceDCount').innerText = serviceDCounter;
-    document.getElementById('serviceInfoCount').innerText = serviceInfoCounter;
     document.getElementById('AllServicesCount').innerText = (await fetchRequests()).length;
 }
 servicesCounts();

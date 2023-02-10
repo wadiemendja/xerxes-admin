@@ -55,17 +55,19 @@ async function saveRequest(data) {
 }
 // get files status counters 
 async function getFilesStatus() {
-    let rejectedFiles = 0; let acceptedFiles = 0; let pendingFiles = 0;
+    let rejectedFiles = 0; let acceptedFiles = 0; let pendingFiles = 0; let acceptedByServiceFiles = 0;
     const promise = new Promise((resolve, reject) => {
         con.query('select count(*) from requests where statut="-1"', (err, result) => { rejectedFiles = result; });
         con.query('select count(*) from requests where statut="1"', (err, result) => { acceptedFiles = result; });
+        con.query('select count(*) from requests where statut="2"', (err, result) => { acceptedByServiceFiles = result; });        
         con.query('select count(*) from requests where statut="0"', (err, result) => { pendingFiles = result; resolve(); });
     })
     await promise;
     return {
         acceptedFiles: acceptedFiles[0]['count(*)'],
         rejectedFiles: rejectedFiles[0]['count(*)'],
-        pendingFiles: pendingFiles[0]['count(*)']
+        pendingFiles: pendingFiles[0]['count(*)'],
+        acceptedByServiceFiles : acceptedByServiceFiles[0]['count(*)']
     };
 }
 // search sql query
@@ -122,17 +124,19 @@ async function getRequestsByService(serviceName) {
 }
 // get requests status counts by service name
 async function getFilesStatusByService(serviceName) {
-    let rejectedFiles = 0; let acceptedFiles = 0; let pendingFiles = 0;
+    let rejectedFiles = 0; let acceptedFiles = 0; let pendingFiles = 0; let acceptedByServiceFiles = 0;
     const promise = new Promise((resolve, reject) => {
         con.query(`select count(*) from requests where statut="-1" and service="${serviceName}"`, (err, result) => { rejectedFiles = result; });
         con.query(`select count(*) from requests where statut="1" and service="${serviceName}"`, (err, result) => { acceptedFiles = result; });
+        con.query(`select count(*) from requests where statut="2" and service="${serviceName}"`, (err, result) => { acceptedByServiceFiles = result; });
         con.query(`select count(*) from requests where statut="0" and service="${serviceName}"`, (err, result) => { pendingFiles = result; resolve(); });
     })
     await promise;
     return {
         acceptedFiles: acceptedFiles[0]['count(*)'],
         rejectedFiles: rejectedFiles[0]['count(*)'],
-        pendingFiles: pendingFiles[0]['count(*)']
+        pendingFiles: pendingFiles[0]['count(*)'],
+        acceptedByServiceFiles : acceptedByServiceFiles[0]['count(*)']
     };
 }
 // edit user passsword 

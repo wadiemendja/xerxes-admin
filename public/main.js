@@ -84,6 +84,7 @@ function listenToPreviewClicks() {
                             <option value="0" style="background:#FFCC00">En attendant</option>
                             <option value="-1" style="background:#FF0000">Rejeté</option>
                             <option value="1" style="background:#008000">Accepté</option>
+                            <option value="2" style="background:#0D6EFD">Accepté par service</option>
                         </select>
                     </p>
                     <p><strong>Nom: </strong>${nom}</p>
@@ -126,7 +127,7 @@ function listenToPreviewClicks() {
                 statutSelecter.style.background = statutSelecter.querySelector(`[value="${statut}"]`).style.background;
             });
             const previewDescription = document.getElementById('description');
-            previewDescription.addEventListener('change', () => { saveBtn.disabled = false })
+            previewDescription.addEventListener('input', () => { saveBtn.disabled = false })
             // change request status and description
             const saveBtn = document.getElementById('saveBtn');
             saveBtn.addEventListener('click', async () => {
@@ -162,16 +163,19 @@ trigerSound.addEventListener('click', () => sound.play());
 const rejectedCountDom = document.getElementById('rejectedCount');
 const pendingCountDom = document.getElementById('pendingCount');
 const acceptedCountDom = document.getElementById('acceptedCount');
+const acceptedByServiceCountDom = document.getElementById('acceptedByServiceCount');
 let initStatusCounts = await fetchStatusCounts();
 rejectedCountDom.innerText = initStatusCounts.rejectedFiles;
 acceptedCountDom.innerText = initStatusCounts.acceptedFiles;
 pendingCountDom.innerText = initStatusCounts.pendingFiles;
+acceptedByServiceCountDom.innerText = initStatusCounts.acceptedByServiceFiles;
 const checkForUpdates = setInterval(async () => {
     const currentStatusCounts = await fetchStatusCounts();
     if (JSON.stringify(currentStatusCounts) != JSON.stringify(initStatusCounts)) {
         rejectedCountDom.innerText = currentStatusCounts.rejectedFiles;
         acceptedCountDom.innerText = currentStatusCounts.acceptedFiles;
         pendingCountDom.innerText = currentStatusCounts.pendingFiles;
+        acceptedByServiceCountDom.innerText = currentStatusCounts.acceptedByServiceFiles;
         requests = await fetchRequests();
         initStatusCounts = currentStatusCounts;
         renderRequestsList();
@@ -188,9 +192,11 @@ searchBtn.addEventListener('click', searchEvent);
 document.getElementById('acceptedCount').addEventListener('click', searchEvent);
 document.getElementById('pendingCount').addEventListener('click', searchEvent);
 document.getElementById('rejectedCount').addEventListener('click', searchEvent);
+document.getElementById('acceptedByServiceCount').addEventListener('click', searchEvent);
 // functions
 async function searchEvent(event) {
     event.preventDefault();
+    servicesDom.forEach(ele => ele.style.backgroundColor = "");
     clearInterval(checkForUpdates);
     const input = event.target.tagName == 'BUTTON' ? searchInput.value : event.target.dataset.status;
     requests = await fetchSearch(input);
@@ -277,19 +283,21 @@ function calculateTimeGap(time) {
 const servicesDom = document.querySelectorAll('.service');
 servicesDom.forEach(element => {
     element.addEventListener('click', async () => {
+        alertSearch.style.display = 'none';
+        noElements.innerHTML = '';
         const serviceName = element.dataset.service;
         if (serviceName == "*") requests = await fetchRequests();
         else requests = await fetchSearch(serviceName);
         element.style.backgroundColor = "#00B28B";
-        servicesDom.forEach(ele => { if (ele != element) ele.style.backgroundColor = "" })
+        servicesDom.forEach(ele => { if (ele != element) ele.style.backgroundColor = "" });
         renderRequestsList();
         listenToPreviewClicks();
     });
 });
 // services requests and time counters
 async function servicesCounts() {
-    let serviceACounter = 0, serviceBCounter = 0, serviceCCounter = 0, serviceDCounter = 0, serviceInfoCounter = 0;
-    const serviceADates = [], serviceBDates = [], serviceCDates = [], serviceDDates = [], serviceInfoDates = [];
+    let serviceACounter = 0, serviceBCounter = 0, serviceCCounter = 0, serviceDCounter = 0;
+    const serviceADates = [], serviceBDates = [], serviceCDates = [], serviceDDates = [];
     const NRequests = await fetchRequests();
     for (let i in NRequests) {
         const person = NRequests[i];
@@ -298,18 +306,15 @@ async function servicesCounts() {
         else if (service == "B") { serviceBCounter++; serviceBDates.push(person.date) }
         else if (service == "C") { serviceCCounter++; serviceCDates.push(person.date) }
         else if (service == "D") { serviceDCounter++; serviceDDates.push(person.date) }
-        else if (service == "Info") { serviceInfoCounter++; serviceInfoDates.push(person.date) }
     }
     document.getElementById('Alastupdate').innerText = calculateTimeGap(Math.max(...serviceADates));
     document.getElementById('Blastupdate').innerText = calculateTimeGap(Math.max(...serviceBDates));
     document.getElementById('Clastupdate').innerText = calculateTimeGap(Math.max(...serviceCDates));
     document.getElementById('Dlastupdate').innerText = calculateTimeGap(Math.max(...serviceDDates));
-    document.getElementById('infoLastupdate').innerText = calculateTimeGap(Math.max(...serviceInfoDates));
     document.getElementById('serviceACount').innerText = serviceACounter;
     document.getElementById('serviceBCount').innerText = serviceBCounter;
     document.getElementById('serviceCCount').innerText = serviceCCounter;
     document.getElementById('serviceDCount').innerText = serviceDCounter;
-    document.getElementById('serviceInfoCount').innerText = serviceInfoCounter;
     document.getElementById('AllServicesCount').innerText = (await fetchRequests()).length;
 }
 servicesCounts();

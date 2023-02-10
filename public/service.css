@@ -87,17 +87,22 @@
     background-color: #FF0000;
 }
 
-#rejectedCount:hover, #acceptedCount:hover, #pendingCount:hover {
+.approvedByService {
+    background-color: #0D6EFD;
+}
+
+#rejectedCount:hover, #acceptedCount:hover, #pendingCount:hover, #acceptedByServiceCount:hover {
     background-color: #00B28B;
     border-radius: 4px;
 }
 
-#rejectedCount, #acceptedCount, #pendingCount {
+#rejectedCount, #acceptedCount, #pendingCount, #acceptedByServiceCount {
     cursor: pointer;
 }
 
 .status_indicator {
     background-color: lightgray;
+    padding: 0 !important;
 }
 
 .status_indicator ul{
