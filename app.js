@@ -1,6 +1,5 @@
 const { app, BrowserWindow } = require('electron');
 require('dotenv').config();
-require('./server');
 // electron app settings
 function createWindow() {
   const win = new BrowserWindow({
@@ -15,5 +14,7 @@ function createWindow() {
 }
 // when app is ready
 app.whenReady().then(createWindow);
+// starting server
+require('./server');
 // on app close exit command
 app.on('window-all-closed', () => { process.exit(0); });
