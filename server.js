@@ -1,11 +1,9 @@
 const express = require('express');
-const { SQLdatabaseConnector, createDatabase, getRequests, saveRequest, getFilesStatus, searchFor, editFileStatus, deleteRequest, getUser, getRequestsByService, getFilesStatusByService, getUsers, editUserPassword } = require('./database/functions');
+const { SQLdatabaseConnector, getRequests, saveRequest, getFilesStatus, searchFor, editFileStatus, deleteRequest, getUser, getRequestsByService, getFilesStatusByService, getUsers, editUserPassword } = require('./database/functions');
 const path = require('path');
 require('dotenv').config();
 // connect to SQL database
 SQLdatabaseConnector();
-// create a database if !exist
-createDatabase();
 // express server setup
 const app = express();
 const PORT = process.env.SERVER_PORT;

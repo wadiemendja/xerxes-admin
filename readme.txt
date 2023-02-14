@@ -14,8 +14,9 @@ Infos:
         select host, user from mysql.user; // See users
         Create a new connection on mysql workbench with same username ip and password
         Add sql port to the firewall inbound rules (wf.msc)
-        flush hosts // refresh connected hosts
+        flush hosts; // refresh connected hosts
         Or just use this if you don't wanna create new user: 
-        UPDATE mysql.user SET Host='%' WHERE Host='localhost' AND User='username';
+        UPDATE mysql.user SET Host='%' WHERE Host='localhost' AND User='root';
+        ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'WM1234';
 
 Todo: 

@@ -9,10 +9,10 @@ const con = mysql.createConnection({
     password: env.DB_PASS
 });
 // database connector
-function SQLdatabaseConnector() {
+async function SQLdatabaseConnector() {
     con.connect((err) => {
         if (err) console.log(err);
-        else console.log('Connected to the database!');
+        else createDatabase();
     });
 }
 // database creator
