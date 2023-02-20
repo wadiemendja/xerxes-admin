@@ -1,6 +1,8 @@
-const { app, BrowserWindow } = require('electron');
+// starting server and getting env variables
+require('./server');
 require('dotenv').config();
 // electron app settings
+const { app, BrowserWindow } = require('electron');
 function createWindow() {
   const win = new BrowserWindow({
     width: 1500,
@@ -12,9 +14,7 @@ function createWindow() {
   win.setMenu(null);
   win.loadURL('http://localhost:' + process.env.SERVER_PORT + '/login.html');
 }
-// when app is ready
+// when app is ready create the window
 app.whenReady().then(createWindow);
-// starting server
-require('./server');
 // on app close exit command
 app.on('window-all-closed', () => { process.exit(0); });

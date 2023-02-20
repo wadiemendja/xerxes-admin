@@ -11,7 +11,7 @@ const serviceDom = document.getElementById('service');
 if (usedService == 'admin') {
     header.innerHTML = renderHeader();
 } else {
-    if (usedService != 'Info'){
+    if (usedService != 'Info') {
         serviceDom.value = usedService;
         serviceDom.disabled = true;
     }
@@ -86,8 +86,13 @@ validerBtn.addEventListener('click', () => {
         },
         body: JSON.stringify(request)
     }).then(console.log('request fullfieled'));
-    alert("Votre demande a été ajoutée à la base de données avec succès, retournez à la page d'accueil...");
-    if (usedService == 'admin') location.href = "/";
-    else location.href = './service.html?service=' + usedService;
+    bootbox.dialog({
+        message: "Votre demande a été ajoutée à la base de données avec succès, retournez à la page d'accueil...",
+        title: "Message",
+        onEscape: () => {
+            if (usedService == 'admin') location.href = "/";
+            else location.href = './service.html?service=' + usedService;
+        }
+    });
 });
 
