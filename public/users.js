@@ -37,8 +37,11 @@ editPassBtns.forEach(btn => {
         const userId = btn.dataset.id;
         const newPassword = btn.parentNode.querySelector('.password').value;
         await editUserPassword(userId, newPassword);
-        alert ('Le mot de passe a été modifié avec succès');
-        location.reload();
+        bootbox.dialog({
+            title: 'Message:',
+            message: 'Le mot de passe a été modifié avec succès',
+            onEscape: () => location.reload()
+        });
     });
 })
 // get users function

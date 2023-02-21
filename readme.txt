@@ -20,8 +20,4 @@ Infos:
         ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'WM1234';
 
 Todo: 
-    replace js alerts and "confirms" with the new one
-        add request page => done
-        index.html, main.js =>
-        users.html, users.js =>
-        service.html, service.js =>
+    

@@ -111,7 +111,7 @@ function listenToPreviewClicks() {
                     <p><strong>Durée de traitement: </strong>${duree_trait}</p>
                     <p>
                         <strong>Description: </strong>
-                        <textarea class="form-control" id="description" rows="3" ${statut != 0 || usedService == 'Info'? 'disabled' : ''}>${description}</textarea>
+                        <textarea class="form-control" id="description" rows="3" ${statut != 0 || usedService == 'Info' ? 'disabled' : ''}>${description}</textarea>
                     </p>
                 </div>
                 <div class="filesDom">
@@ -144,18 +144,39 @@ function listenToPreviewClicks() {
             saveBtn.addEventListener('click', async () => {
                 returnBtn.click();
                 await editFileStatus(statut, previewDescription.value, id);
-                alert('Statut du fichier modifié avec succès.');
-                location.href = "/service.html?service=" + usedService;
+                bootbox.dialog({
+                    title: 'Message:',
+                    message: 'Statut du fichier modifié avec succès.',
+                    onEscape: () => location.href = "/service.html?service=" + usedService
+                });
             });
             // delete request
             const deleteBtn = document.getElementById('deleteBtn');
-            deleteBtn.addEventListener('click', async () => {
-                if (confirm('Etes-vous sûr de vouloir supprimer cette demode ?')) {
-                    returnBtn.click();
-                    await deleteRequest(id);
-                    alert('Demonde supprimé avec succès.');
-                    location.href = "/service.html?service=" + usedService;
-                }
+            deleteBtn.addEventListener('click', () => {
+                bootbox.confirm({
+                    title: 'Message:',
+                    message: 'Etes-vous sûr de vouloir supprimer cette demode ?',
+                    buttons: {
+                        confirm: {
+                            label: 'Oui',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Non',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: async (answer) => {
+                        if (!answer) return;
+                        returnBtn.click();
+                        await deleteRequest(id);
+                        bootbox.dialog({
+                            title: 'Message:',
+                            message: 'Demonde supprimé avec succès.',
+                            onEscape: () => location.href = "/service.html?service=" + usedService
+                        });
+                    }
+                });
             });
             // return from preview to home page
             const returnBtn = document.getElementById('returnBtn');

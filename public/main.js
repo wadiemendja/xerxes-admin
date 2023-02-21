@@ -133,18 +133,39 @@ function listenToPreviewClicks() {
             saveBtn.addEventListener('click', async () => {
                 returnBtn.click();
                 await editFileStatus(statut, previewDescription.value, id);
-                alert('Statut du fichier modifié avec succès.');
-                location.href = "/";
+                bootbox.dialog({
+                    title: 'Message:',
+                    message: 'Statut du fichier modifié avec succès.',
+                    onEscape: () => location.href = "/"
+                });
             });
             // delete request
             const deleteBtn = document.getElementById('deleteBtn');
-            deleteBtn.addEventListener('click', async () => {
-                if (confirm('Etes-vous sûr de vouloir supprimer cette demode ?')) {
-                    returnBtn.click();
-                    await deleteRequest(id);
-                    alert('Demonde supprimé avec succès.');
-                    location.href = "/"
-                }
+            deleteBtn.addEventListener('click', () => {
+                bootbox.confirm({
+                    title: 'Message:',
+                    message: 'Etes-vous sûr de vouloir supprimer cette demode ?',
+                    buttons: {
+                        confirm: {
+                            label: 'Oui',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Non',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: async (answer) => {
+                        if (!answer) return;
+                        returnBtn.click();
+                        await deleteRequest(id);
+                        bootbox.dialog({
+                            title: 'Message:',
+                            message: 'Demonde supprimé avec succès.',
+                            onEscape: () => location.href = "/"
+                        });
+                    }
+                });
             });
             // return from preview to home page
             const returnBtn = document.getElementById('returnBtn');
@@ -244,7 +265,7 @@ async function fetchSearch(input) {
 function renderStatusBox(status) {
     if (status == 1) return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#008000;margin:0 auto"></div>`;
     else if (status == 0) return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#FFCC00;margin:0 auto"></div>`;
-    else if (status == -1)return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#FF0000;margin:0 auto"></div>`;
+    else if (status == -1) return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#FF0000;margin:0 auto"></div>`;
     else return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#0D6EFD;margin:0 auto"></div>`;
 }
 // edit file status and description
