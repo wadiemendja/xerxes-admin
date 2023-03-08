@@ -20,5 +20,9 @@ Infos:
         ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'WM1234';
 
 Todo: 
-    side bar clicks when service has zero requests on (info service and admin)
+    month / year in FR
+    Hide side bars on services and utilisateur...
+    Send requests to Info service
+    Send requests between services
+    Fix ID
     
