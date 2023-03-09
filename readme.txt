@@ -21,6 +21,7 @@ Infos:
 
 Todo: 
     month / year in FR
+    convert jquery/UI.. libs to local libs
     Hide side bars on services and utilisateur...
     Send requests to Info service
     Send requests between services

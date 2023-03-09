@@ -96,3 +96,13 @@ validerBtn.addEventListener('click', () => {
     });
 });
 
+// changing date format from EN to FR
+const today = new Date();
+const day = today.getDate().toString().length == 1 ? '0' + today.getDate() : today.getDate();
+const month = today.getMonth().toString().length == 1 ? '0' + (today.getMonth() + 1) : (today.getMonth() + 1);
+date_depot.value = day + '/' + month + '/' + today.getFullYear();
+$('#date_depot').datepicker({
+    dateFormat: 'dd/mm/yy',
+    changeMonth: true,
+    changeYear: true
+});
