@@ -21,9 +21,10 @@ Infos:
 
 Todo: 
     month / year in FR
+    Form validation
     convert jquery/UI.. libs to local libs
     Hide side bars on services and utilisateur...
+    Fix ID
     Send requests to Info service
     Send requests between services
-    Fix ID
     
