@@ -35,21 +35,22 @@ fileDom.addEventListener('change', (event) => {
     };
 });
 // valider button when click
-document.getElementById('nom').value = "Mendja";
-document.getElementById('prenom').value = "Wadie";
-document.getElementById('email').value = "wadiemendja@gmail.com"
-document.getElementById('telephone').value = "0672328144";
-//document.getElementById('wilaya').value = "Bechar";
-document.getElementById('daira').value = "IGLI";
-document.getElementById('commune').value = "Igli";
-document.getElementById('domain').value = "Informatique";
-//document.getElementById('service').value = "Industriel";
-document.getElementById('date_depot').value = "25/02/2022";
-document.getElementById('duree_trait').value = "4 jour";
-document.getElementById('description').value = "simple description here";
+// document.getElementById('nom').value = "Mendja";
+// document.getElementById('prenom').value = "Wadie";
+// document.getElementById('email').value = "wadiemendja@gmail.com"
+// document.getElementById('telephone').value = "0672328144";
+// //document.getElementById('wilaya').value = "Bechar";
+// document.getElementById('daira').value = "IGLI";
+// document.getElementById('commune').value = "Igli";
+// document.getElementById('domain').value = "Informatique";
+// //document.getElementById('service').value = "Industriel";
+// document.getElementById('date_depot').value = "25/02/2022";
+// document.getElementById('duree_trait').value = "4 jour";
+// document.getElementById('description').value = "simple description here";
 const validerBtn = document.getElementById('valider');
 let request = {};
 validerBtn.addEventListener('click', () => {
+    validateForm();
     const nom = document.getElementById('nom').value;
     const prenom = document.getElementById('prenom').value;
     const email = document.getElementById('email').value;
@@ -86,13 +87,9 @@ validerBtn.addEventListener('click', () => {
         },
         body: JSON.stringify(request)
     }).then(console.log('request fullfieled'));
-    bootbox.dialog({
-        message: "Votre demande a été ajoutée à la base de données avec succès, retournez à la page d'accueil...",
-        title: "Message",
-        onEscape: () => {
-            if (usedService == 'admin') location.href = "/";
-            else location.href = './service.html?service=' + usedService;
-        }
+    document.getElementById('okAlert').addEventListener('click', ()=> {
+        if (usedService == 'admin') location.href = "/";
+        else location.href = './service.html?service=' + usedService;
     });
 });
 
@@ -106,3 +103,13 @@ $('#date_depot').datepicker({
     changeMonth: true,
     changeYear: true
 });
+
+// Form validation
+function validateForm() {
+    const inputs = document.querySelectorAll('form input');
+    inputs.forEach(input => {
+        if (input.value == '') {
+            input.style.borderColor = 'red';
+        }
+    });
+}
