@@ -49,8 +49,7 @@ fileDom.addEventListener('change', (event) => {
 // document.getElementById('description').value = "simple description here";
 const validerBtn = document.getElementById('valider');
 let request = {};
-validerBtn.addEventListener('click', () => {
-    validateForm();
+validerBtn.addEventListener('click', async () => {
     const nom = document.getElementById('nom').value;
     const prenom = document.getElementById('prenom').value;
     const email = document.getElementById('email').value;
@@ -64,6 +63,8 @@ validerBtn.addEventListener('click', () => {
     const date_depot = document.getElementById('date_depot').value;
     const duree_trait = document.getElementById('duree_trait').value;
     const description = document.getElementById('description').value;
+    const isValid = validateForm();
+    if (!isValid) return
     request = {
         nom: nom,
         prenom: prenom,
@@ -86,13 +87,13 @@ validerBtn.addEventListener('click', () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(request)
-    }).then(console.log('request fullfieled'));
-    document.getElementById('okAlert').addEventListener('click', ()=> {
+    });
+    $('#exampleModal').modal('show');
+    document.getElementById('okAlert').addEventListener('click', () => {
         if (usedService == 'admin') location.href = "/";
         else location.href = './service.html?service=' + usedService;
     });
 });
-
 // changing date format from EN to FR
 const today = new Date();
 const day = today.getDate().toString().length == 1 ? '0' + today.getDate() : today.getDate();
@@ -103,13 +104,25 @@ $('#date_depot').datepicker({
     changeMonth: true,
     changeYear: true
 });
-
 // Form validation
+const inputs = document.querySelectorAll('.toBeCkecked');
+console.log(inputs)
 function validateForm() {
-    const inputs = document.querySelectorAll('form input');
-    inputs.forEach(input => {
-        if (input.value == '') {
-            input.style.borderColor = 'red';
+    let checker = true;
+    inputs.forEach(element => {
+        if (element.value.length == 0) {
+            element.style.cssText = 'border-color: red !important';
+            checker = false;
+            return;
         }
     });
+    return checker;
 }
+// reset borders when typing
+inputs.forEach(element => {
+    element.addEventListener('input', () => { element.style.cssText = 'border-color: #00B28B !important' });
+});
+// disable clicking outside of the alert box
+document.addEventListener('DOMContentLoaded', () => {
+    $('#exampleModal').modal({ backdrop: 'static', keyboard: false });
+});

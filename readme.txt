@@ -20,9 +20,7 @@ Infos:
         ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'WM1234';
 
 Todo: 
-    Form validation
-    Hide side bars on services and utilisateur...
+    Hide side bars on services
     Fix ID
-    Send requests to Info service
     Send requests between services
     

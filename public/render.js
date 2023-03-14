@@ -19,7 +19,7 @@ function renderHeader(service = "Admin") {
             <a class="nav-link" href="/add-request?service=${service != 'Admin' ? service : 'admin'}">Ajouter un demande</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="${service != 'Admin' ? homePage : './users.html?service=admin'}">Utilisateurs</a>
+            ${service == 'Admin' ? '<a class="nav-link" href="./users.html?service=admin">Utilisateurs</a>' : ''}
           </li>
         </ul>
         <form class="d-flex" role="search">
