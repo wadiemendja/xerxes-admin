@@ -20,7 +20,5 @@ Infos:
         ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'WM1234';
 
 Todo: 
-    Hide side bars on services
-    Fix ID
     Send requests between services
     

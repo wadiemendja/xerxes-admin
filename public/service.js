@@ -30,13 +30,12 @@ if (requests.length == 0) {
 }
 // rendering data (requests list)
 async function renderRequestsList() {
-    let counter = 1;
     tableBody.innerHTML = "";
     for (let i in requests.reverse()) {
         const person = requests[i];
         tableBody.innerHTML += `
         <tr data-daira="${person.daira}" data-commune="${person.commune}" data-description="${person.description}" data-pdf=${person.fichier}>
-            <th scope="row" class="id" data-id="${person.id}">${counter}</th>
+            <th scope="row" class="id" data-id="${person.id}">${person.id}</th>
             <td class="nom">${person.nom}</td>
             <td class="prenom">${person.prenom}</td>
             <td class="email" data-email="${person.email}">${person.email.substring(0, 16)}...</td>
@@ -49,7 +48,6 @@ async function renderRequestsList() {
             <td class="statut" data-statut="${person.statut}">${renderStatusBox(person.statut)}</td>
         </tr>
         `;
-        counter++;
     }
     spinner.style.display = "none";
 }
@@ -89,14 +87,16 @@ function listenToPreviewClicks() {
                                 <option value="-1" style="background:#FF0000">Rejeté</option>
                                 <option value="0" style="background:#FFCC00">En attendant</option>
                                 <option value="2" style="background:#0D6EFD">Accepté par service</option>
+                                <option value="-2">Términé</option>
                         </select>`
                     :
                     `<strong>Modifier l'état de la demonde: </strong>
                         <select class="form-select" aria-label="Default select example" id="statutSelecter">
                                 <option value="0" style="background:#FFCC00">En attendant</option>
                                 <option value="2" style="background:#0D6EFD">Accepté par service</option>
+                                <option value="-2">Términé</option>
                         </select>`
-                }
+                    }
                     </p>
                     <p><strong>Nom: </strong>${nom}</p>
                     <p><strong>Prenom: </strong>${prenom}</p>
@@ -213,7 +213,7 @@ const checkForUpdates = setInterval(async () => {
         initStatusCounts = currentStatusCounts;
         renderRequestsList();
         listenToPreviewClicks();
-        servicesCounts();
+        // servicesCounts();
         trigerSound.click();
     }
 }, 1000);
@@ -309,12 +309,13 @@ async function fetchSearch(input) {
     const result = await fetcher.json();
     return result;
 }
-// render status box 
+// render status box (0: en attendant 1: accepté -1: refusé 2: accepté par service -2: términé)
 function renderStatusBox(status) {
     if (status == 1) return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#008000;margin:0 auto"></div>`;
     else if (status == 0) return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#FFCC00;margin:0 auto"></div>`;
     else if (status == -1) return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#FF0000;margin:0 auto"></div>`;
-    else return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#0D6EFD;margin:0 auto"></div>`;
+    else if (status == 2) return `<div style="border:1px solid #000000;width:10px;height:10px;background-color:#0D6EFD;margin:0 auto"></div>`;
+    else return `<div>✔</div>`;
 }
 // edit file status and description
 async function editFileStatus(statut, description, reqId) {
@@ -371,7 +372,7 @@ async function servicesCounts() {
     document.getElementById('serviceDCount').innerText = serviceDCounter;
     document.getElementById('AllServicesCount').innerText = (await fetchRequests()).length;
 }
-servicesCounts();
+// servicesCounts();
 // make side bar available if the used service is informatique
 if (usedService == 'Info') {
     const servicesDom = document.querySelectorAll('.service');
