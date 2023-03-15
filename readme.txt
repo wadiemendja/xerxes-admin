@@ -20,5 +20,5 @@ Infos:
         ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'WM1234';
 
 Todo: 
-    Send requests between services
+    Searching for shared requests ain't working (colored boxes as well)
     

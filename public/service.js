@@ -96,7 +96,7 @@ function listenToPreviewClicks() {
                                 <option value="2" style="background:#0D6EFD">Accepté par service</option>
                                 <option value="-2">Términé</option>
                         </select>`
-                    }
+                }
                     </p>
                     <p><strong>Nom: </strong>${nom}</p>
                     <p><strong>Prenom: </strong>${prenom}</p>
@@ -260,11 +260,10 @@ async function fetchRequests() {
 }
 // fetching requests by service name
 async function fetchRequestsByService() {
-    if (usedService == 'Info') {
-        const fetcher = await fetch('/api/get-requests');
-        const requests = await fetcher.json();
-        return requests;
-    } else {
+    const fetcher1 = await fetch('/api/get-requests');
+    const allRequests = await fetcher1.json();
+    if (usedService == 'Info') return allRequests;
+    else {
         const fetcher = await fetch('/api/get-requests-by-service', {
             method: 'POST',
             headers: {
@@ -273,7 +272,14 @@ async function fetchRequestsByService() {
             },
             body: JSON.stringify({ service: usedService })
         });
-        const result = await fetcher.json();
+        const result1 = await fetcher.json();
+        let sharedRequests = [];
+        for (let i in allRequests) {
+            const req = allRequests[i];
+            const sharedWith = req.sharedWith;
+            if (sharedWith.includes(usedService)) sharedRequests.push(req);
+        }
+        const result = result1.concat(sharedRequests);
         return result;
     }
 }
