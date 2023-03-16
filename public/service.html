@@ -135,6 +135,38 @@
       </tr>
     </table>
   </div>
+  <!-- Share request alert -->
+  <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Partager Cette demande avec:</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="shared-with-who" class="col-form-label">Déjà partagé avec: <span class="shared-with-who"></span></label>
+            </div>
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Destinataire:</label>
+              <select class="form-select serviceSelector">
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Message:</label>
+              <textarea class="form-control" id="messageText" placeholder="Optional ...."></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary closeShareAlert" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-primary" id="shareReqBtn">Envoyez la demande</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- footer -->
   <div id="footer"></div>
 </body>
 

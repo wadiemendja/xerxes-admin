@@ -34,7 +34,7 @@ async function renderRequestsList() {
     for (let i in requests.reverse()) {
         const person = requests[i];
         tableBody.innerHTML += `
-        <tr data-daira="${person.daira}" data-commune="${person.commune}" data-description="${person.description}" data-pdf=${person.fichier}>
+        <tr data-sharedwith="${person.sharedWith}" data-daira="${person.daira}" data-commune="${person.commune}" data-description="${person.description}" data-pdf=${person.fichier}>
             <th scope="row" class="id" data-id="${person.id}">${person.id}</th>
             <td class="nom">${person.nom}</td>
             <td class="prenom">${person.prenom}</td>
@@ -61,6 +61,7 @@ function listenToPreviewClicks() {
             document.body.style.overflow = "hidden";
             previewer.style.marginTop = window.scrollY + "px";
             previewer.style.visibility = "visible";
+            const identity = element.querySelector('.id').dataset.id;
             const nom = element.querySelector('.nom').innerText;
             const prenom = element.querySelector('.prenom').innerText;
             const email = element.querySelector('.email').dataset.email;
@@ -75,8 +76,8 @@ function listenToPreviewClicks() {
             const description = element.dataset.description;
             const id = element.querySelector('.id').dataset.id;
             let statut = element.querySelector('.statut').dataset.statut;
+            const sharedWith = element.dataset.sharedwith;
             const fichier = eval(element.dataset.pdf);
-            console.log(statut)
             previewer_container.innerHTML = `
                 <div>
                     <p>
@@ -98,6 +99,8 @@ function listenToPreviewClicks() {
                         </select>`
                 }
                     </p>
+                    <span id="sharedWithSpan" data-sharedwith="${sharedWith}"><span>
+                    <p><strong>Id: </strong><span id="index">${identity}</span></p>
                     <p><strong>Nom: </strong>${nom}</p>
                     <p><strong>Prenom: </strong>${prenom}</p>
                     <p><strong>Email: </strong>${email}</p>
@@ -127,6 +130,7 @@ function listenToPreviewClicks() {
                 <button class="btn btn-primary preview-btn" id="returnBtn">Retour</button>
                 <button class="btn btn-danger preview-btn" id="deleteBtn" ${statut != 0 || usedService == 'Info' ? 'disabled' : ''}>Supprimer la demande</button>
                 <button class="btn btn-success preview-btn" id="saveBtn" disabled>Sauvegarder les modifications</button>
+                <button class="btn btn-dark preview-btn" data-bs-toggle="modal" data-bs-target="#shareModal">Partager avec..</button>
             `;
             // listening to changes
             const statutSelecter = document.getElementById('statutSelecter');
@@ -280,7 +284,8 @@ async function fetchRequestsByService() {
             if (sharedWith.includes(usedService)) sharedRequests.push(req);
         }
         const result = result1.concat(sharedRequests);
-        return result;
+
+        return result.sort();
     }
 }
 // fetch files status counts
@@ -397,3 +402,53 @@ if (usedService == 'Info') {
     });
     document.querySelector('.services').style.opacity = "1";
 }
+// redering service destination excepte the used one
+const services = ['A', 'B', 'C', 'D'];
+const serviceSelector = document.querySelector('.serviceSelector');
+for (let i in services) {
+    const service = services[i];
+    if (service == usedService) continue;
+    else {
+        serviceSelector.innerHTML += `<option value="${service}">Service ${service}</option>`
+    }
+}
+// Send request to the destination service
+const shareReqBtn = document.getElementById('shareReqBtn');
+shareReqBtn.addEventListener('click', async () => {
+    const reqId = document.getElementById('index').innerText;
+    const message = "Message du service " + usedService + ": " + document.getElementById('messageText').value;
+    const fetcher = await fetch('/api/share-request-with', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ reqId: reqId, selectedService: serviceSelector.value, message: message })
+    });
+    const done = await fetcher.json();
+    document.querySelector('.closeShareAlert').click();
+    bootbox.dialog({
+        title: 'Message:',
+        message: 'la demande a été partagée avec succès à service ' + serviceSelector.value + '.',
+        onEscape: () => location.href = "/service.html?service=" + usedService
+    });
+});
+// when share alert shows
+const shareModal = document.getElementById('shareModal');
+shareModal.addEventListener('shown.bs.modal', () => {
+    const sharedWithSpan = document.getElementById('sharedWithSpan').dataset.sharedwith;
+    document.querySelector('.shared-with-who').innerText = sharedWithSpan;
+});
+// when share alert hides
+shareModal.addEventListener('hidden.bs.modal', () => {
+    document.querySelector('.shared-with-who').innerText = "";
+});
+// sort array by first element
+function sortFunction(a, b) {
+    if (a[0] === b[0]) {
+        return 0;
+    }
+    else {
+        return (a[0] < b[0]) ? -1 : 1;
+    }
+} 

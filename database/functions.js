@@ -45,7 +45,7 @@ async function getRequests() {
 // store requests in db
 async function saveRequest(data) {
     const promise = new Promise((resolve, reject) => {
-        con.query(`insert into requests (nom, prenom, email, telephone, wilaya, daira, commune, domain, service, date_depot, duree_trait, description, statut, date, sharedWith, fichier) values ("${data.nom}", "${data.prenom}", "${data.email}", "${data.telephone}", "${data.wilaya}", "${data.daira}", "${data.commune}", "${data.domain}", "${data.service}", "${data.date_depot}", "${data.duree_trait}", "${data.description}", "0", "${new Date().getTime()}", "[]", '${data.fichier}')`,
+        con.query(`insert into requests (nom, prenom, email, telephone, wilaya, daira, commune, domain, service, date_depot, duree_trait, description, statut, date, sharedWith, fichier) values ("${data.nom}", "${data.prenom}", "${data.email}", "${data.telephone}", "${data.wilaya}", "${data.daira}", "${data.commune}", "${data.domain}", "${data.service}", "${data.date_depot}", "${data.duree_trait}", "${data.description}", "0", "${new Date().getTime()}", "", '${data.fichier}')`,
             (err, result) => {
                 if (err) console.log(err);
                 else resolve();
@@ -59,7 +59,7 @@ async function getFilesStatus() {
     const promise = new Promise((resolve, reject) => {
         con.query('select count(*) from requests where statut="-1"', (err, result) => { rejectedFiles = result; });
         con.query('select count(*) from requests where statut="1"', (err, result) => { acceptedFiles = result; });
-        con.query('select count(*) from requests where statut="2"', (err, result) => { acceptedByServiceFiles = result; });        
+        con.query('select count(*) from requests where statut="2"', (err, result) => { acceptedByServiceFiles = result; });
         con.query('select count(*) from requests where statut="0"', (err, result) => { pendingFiles = result; resolve(); });
     })
     await promise;
@@ -67,7 +67,7 @@ async function getFilesStatus() {
         acceptedFiles: acceptedFiles[0]['count(*)'],
         rejectedFiles: rejectedFiles[0]['count(*)'],
         pendingFiles: pendingFiles[0]['count(*)'],
-        acceptedByServiceFiles : acceptedByServiceFiles[0]['count(*)']
+        acceptedByServiceFiles: acceptedByServiceFiles[0]['count(*)']
     };
 }
 // search sql query
@@ -136,7 +136,7 @@ async function getFilesStatusByService(serviceName) {
         acceptedFiles: acceptedFiles[0]['count(*)'],
         rejectedFiles: rejectedFiles[0]['count(*)'],
         pendingFiles: pendingFiles[0]['count(*)'],
-        acceptedByServiceFiles : acceptedByServiceFiles[0]['count(*)']
+        acceptedByServiceFiles: acceptedByServiceFiles[0]['count(*)']
     };
 }
 // edit user passsword 
@@ -147,8 +147,34 @@ async function editUserPassword(userId, newPassword) {
     await promise;
     return true;
 }
+// share a request with other services
+async function shareRequestWith(reqId, selectedService, message) {
+    // updating sharedWith property
+    let oldSharedWith = undefined;
+    const promise = new Promise((resolve, reject) => {
+        con.query(`select sharedWith from requests where id=${reqId}`, (err, result) => {
+            oldSharedWith = result;
+            let newSharedWith = oldSharedWith[0]['sharedWith'];
+            console.log(newSharedWith);
+            if (newSharedWith.indexOf(selectedService) == -1) newSharedWith += ',' + selectedService;
+            con.query(`update requests set sharedWith="${newSharedWith}" where id=${reqId}`, (err, result) => { resolve(); });
+        });
+    });
+    await promise;
+    // updating description "by adding message in it"
+    let oldDescription = undefined;
+    const promise3 = new Promise((resolve, reject) => {
+        con.query(`select description from requests where id=${reqId}`, (err, result) => {
+            oldDescription = result;
+            const newDescription = message + '\n' + oldDescription[0]['description'];
+            con.query(`update requests set description="${newDescription}" where id=${reqId}`, (err, result) => { resolve();});
+        });
+    });
+    await promise3;
+    return true;
+}
 module.exports = {
     SQLdatabaseConnector, createDatabase, getRequests, saveRequest, getFilesStatus, searchFor,
     editFileStatus, deleteRequest, getUser, getRequestsByService, getFilesStatusByService, getUsers,
-    editUserPassword
+    editUserPassword, shareRequestWith
 };

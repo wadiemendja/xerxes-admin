@@ -106,7 +106,6 @@ $('#date_depot').datepicker({
 });
 // Form validation
 const inputs = document.querySelectorAll('.toBeCkecked');
-console.log(inputs)
 function validateForm() {
     let checker = true;
     inputs.forEach(element => {

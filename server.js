@@ -1,5 +1,5 @@
 const express = require('express');
-const { SQLdatabaseConnector, getRequests, saveRequest, getFilesStatus, searchFor, editFileStatus, deleteRequest, getUser, getRequestsByService, getFilesStatusByService, getUsers, editUserPassword } = require('./database/functions');
+const { SQLdatabaseConnector, getRequests, saveRequest, getFilesStatus, searchFor, editFileStatus, deleteRequest, getUser, getRequestsByService, getFilesStatusByService, getUsers, editUserPassword, shareRequestWith } = require('./database/functions');
 const path = require('path');
 require('dotenv').config();
 // connect to SQL database
@@ -85,4 +85,11 @@ app.post('/api/edit-user-password', async (req, res) => {
         const userId = req.body.userId;
         const newPassword = req.body.newPassword;
         res.send(await editUserPassword(userId, newPassword));
+});
+// share request with another service
+app.post('/api/share-request-with', async (req, res) => {
+        const reqId = req.body.reqId;
+        const selectedService = req.body.selectedService;
+        const message = req.body.message;
+        res.send(await shareRequestWith(reqId, selectedService, message));
 });

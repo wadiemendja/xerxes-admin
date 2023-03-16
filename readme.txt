@@ -20,5 +20,7 @@ Infos:
         ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'WM1234';
 
 Todo: 
+    add already shared with
+    order the request
     Searching for shared requests ain't working (colored boxes as well)
     
