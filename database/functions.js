@@ -72,9 +72,9 @@ async function getFilesStatus() {
 }
 // search sql query
 async function searchFor(searchInput) {
-    let results = undefined;
+    let results = {};
     const promise = new Promise((resolve, reject) => {
-        con.query(`select * from requests where nom="${searchInput}" or prenom="${searchInput}" or wilaya="${searchInput}" or telephone="${searchInput}" or statut="${searchInput}" or service="${searchInput}" or id=${searchInput}`, (err, result) => { results = result; resolve(); });
+        con.query(`select * from requests where nom="${searchInput}" or prenom="${searchInput}" or wilaya="${searchInput}" or telephone="${searchInput}" or statut="${searchInput}" or service="${searchInput}" or id="${searchInput}"`, (err, result) => { results = result; resolve(); });
     });
     await promise;
     return results;

@@ -81,7 +81,7 @@ function listenToPreviewClicks() {
             previewer_container.innerHTML = `
                 <div>
                     <p>
-                    ${statut == 1 || statut == -1 || usedService == 'Info' ?
+                    ${usedService == 'Info' ?
                     `<strong>L'état de la demonde: </strong>
                         <select class="form-select" aria-label="Default select example" id="statutSelecter" disabled>
                                 <option value="1" style="background:#008000">Accepté</option>
@@ -95,6 +95,8 @@ function listenToPreviewClicks() {
                         <select class="form-select" aria-label="Default select example" id="statutSelecter">
                                 <option value="0" style="background:#FFCC00">En attendant</option>
                                 <option value="2" style="background:#0D6EFD">Accepté par service</option>
+                                <option value="1" style="background:#008000">Accepté</option>
+                                <option value="-1" style="background:#FF0000">Rejeté</option>
                                 <option value="-2">Términé</option>
                         </select>`
                 }
@@ -238,7 +240,11 @@ async function searchEvent(event) {
     requests = await fetchSearch(input);
     if (usedService != 'Info') {
         const holderArr = [];
-        for (let i in requests) if (requests[i].service == usedService) holderArr.push(requests[i]);
+        for (let i in requests){
+            console.log(requests[i].sharedWith);
+            if (requests[i].service == usedService || requests[i].sharedWith.includes(usedService)) 
+                holderArr.push(requests[i]);
+        } 
         requests = holderArr;
     }
     tableBody.innerHTML = "";
@@ -284,8 +290,7 @@ async function fetchRequestsByService() {
             if (sharedWith.includes(usedService)) sharedRequests.push(req);
         }
         const result = result1.concat(sharedRequests);
-
-        return result.sort();
+        return result.sort(sortFunction);
     }
 }
 // fetch files status counts
@@ -361,7 +366,7 @@ function calculateTimeGap(time) {
     else return result
 }
 // services requests and time counters
-async function servicesCounts() {
+/*async function servicesCounts() {
     let serviceACounter = 0, serviceBCounter = 0, serviceCCounter = 0, serviceDCounter = 0;
     const serviceADates = [], serviceBDates = [], serviceCDates = [], serviceDDates = [];
     const NRequests = await fetchRequests();
@@ -383,7 +388,7 @@ async function servicesCounts() {
     document.getElementById('serviceDCount').innerText = serviceDCounter;
     document.getElementById('AllServicesCount').innerText = (await fetchRequests()).length;
 }
-// servicesCounts();
+servicesCounts();*/
 // make side bar available if the used service is informatique
 if (usedService == 'Info') {
     const servicesDom = document.querySelectorAll('.service');
