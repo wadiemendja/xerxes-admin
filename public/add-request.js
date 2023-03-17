@@ -35,18 +35,18 @@ fileDom.addEventListener('change', (event) => {
     };
 });
 // valider button when click
-document.getElementById('nom').value = "Mendja";
-document.getElementById('prenom').value = "Wadie";
-document.getElementById('email').value = "wadiemendja@gmail.com"
-document.getElementById('telephone').value = "0672328144";
-//document.getElementById('wilaya').value = "Bechar";
-document.getElementById('daira').value = "IGLI";
-document.getElementById('commune').value = "Igli";
-document.getElementById('domain').value = "Informatique";
-//document.getElementById('service').value = "Industriel";
-document.getElementById('date_depot').value = "25/02/2022";
-document.getElementById('duree_trait').value = "4 jour";
-document.getElementById('description').value = "simple description here";
+// document.getElementById('nom').value = "Mendja";
+// document.getElementById('prenom').value = "Wadie";
+// document.getElementById('email').value = "wadiemendja@gmail.com"
+// document.getElementById('telephone').value = "0672328144";
+// //document.getElementById('wilaya').value = "Bechar";
+// document.getElementById('daira').value = "IGLI";
+// document.getElementById('commune').value = "Igli";
+// document.getElementById('domain').value = "Informatique";
+// //document.getElementById('service').value = "Industriel";
+// document.getElementById('date_depot').value = "25/02/2022";
+// document.getElementById('duree_trait').value = "4 jour";
+// document.getElementById('description').value = "simple description here";
 const validerBtn = document.getElementById('valider');
 let request = {};
 validerBtn.addEventListener('click', async () => {
