@@ -24,7 +24,7 @@
     border-radius: 6px;
     margin: 0 auto;
     overflow-y: scroll;
-    height: 500px;
+    height: 80%;
 }
 
 #preview_container .filesDom iframe {
