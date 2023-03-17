@@ -132,11 +132,21 @@ async function getFilesStatusByService(serviceName) {
         con.query(`select count(*) from requests where statut="0" and service="${serviceName}"`, (err, result) => { pendingFiles = result; resolve(); });
     })
     await promise;
+    const requests = await getRequests();
+    let rejCounter = 0, accepCounter = 0, penCounter = 0, accByserCounter = 0;
+    for (let i in requests) {
+        if (requests[i].sharedWith.includes(serviceName)) {
+            if (requests[i].statut == '-1') rejCounter++;
+            else if (requests[i].statut == '1') accepCounter++;
+            else if (requests[i].statut == '2') accByserCounter++;
+            else if (requests[i].statut == '0') penCounter++;
+        }
+    }
     return {
-        acceptedFiles: acceptedFiles[0]['count(*)'],
-        rejectedFiles: rejectedFiles[0]['count(*)'],
-        pendingFiles: pendingFiles[0]['count(*)'],
-        acceptedByServiceFiles: acceptedByServiceFiles[0]['count(*)']
+        acceptedFiles: acceptedFiles[0]['count(*)'] + accepCounter,
+        rejectedFiles: rejectedFiles[0]['count(*)'] + rejCounter,
+        pendingFiles: pendingFiles[0]['count(*)'] + penCounter,
+        acceptedByServiceFiles: acceptedByServiceFiles[0]['count(*)'] + accByserCounter
     };
 }
 // edit user passsword 
@@ -167,7 +177,7 @@ async function shareRequestWith(reqId, selectedService, message) {
         con.query(`select description from requests where id=${reqId}`, (err, result) => {
             oldDescription = result;
             const newDescription = message + '\n' + oldDescription[0]['description'];
-            con.query(`update requests set description="${newDescription}" where id=${reqId}`, (err, result) => { resolve();});
+            con.query(`update requests set description="${newDescription}" where id=${reqId}`, (err, result) => { resolve(); });
         });
     });
     await promise3;

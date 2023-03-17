@@ -241,7 +241,6 @@ async function searchEvent(event) {
     if (usedService != 'Info') {
         const holderArr = [];
         for (let i in requests){
-            console.log(requests[i].sharedWith);
             if (requests[i].service == usedService || requests[i].sharedWith.includes(usedService)) 
                 holderArr.push(requests[i]);
         } 
