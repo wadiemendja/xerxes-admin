@@ -20,3 +20,4 @@ Infos:
         ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'WM1234';
 
 Todo: 
+    
