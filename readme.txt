@@ -19,5 +19,4 @@ Infos:
         UPDATE mysql.user SET Host='%' WHERE Host='localhost' AND User='root';
         ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'WM1234';
 
-Todo:
-	
+Todo:	
