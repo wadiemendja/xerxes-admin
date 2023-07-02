@@ -19,13 +19,13 @@
         UPDATE mysql.user SET Host='%' WHERE Host='localhost' AND User='root'; <br>
         ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'WM1234'; <br>
 
-<h2>Login layout:</h2>
-
-![alt text](https://imgur.com/ACb4G7T.png)
-
 <h2>Home page layout:</h2>
 
 ![alt text](https://imgur.com/Xs9fRzz.png)
+
+<h2>Login layout:</h2>
+
+![alt text](https://imgur.com/ACb4G7T.png)
 
 <h2>Request's data previewing:</h2>
 
