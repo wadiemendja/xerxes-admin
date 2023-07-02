@@ -23,10 +23,6 @@
 
 ![alt text](https://imgur.com/Xs9fRzz.png)
 
-<h2>Login layout:</h2>
-
-![alt text](https://imgur.com/ACb4G7T.png)
-
 <h2>Request's data previewing:</h2>
 
 ![alt text](https://imgur.com/dHp0sBU.png)
@@ -42,6 +38,10 @@
 ![alt text](https://imgur.com/WfKj1ZB.png)
 
 ![alt text](https://imgur.com/qeCtxuf.png)
+
+<h2>Login layout:</h2>
+
+![alt text](https://imgur.com/ACb4G7T.png)
 
 <h2>Users and user access:</h2>
 
